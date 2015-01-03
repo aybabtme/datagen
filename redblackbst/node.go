@@ -1,5 +1,9 @@
 package redblackbst
 
+import (
+// "log"
+)
+
 const (
 	red   = true
 	black = false
@@ -45,6 +49,20 @@ func flipColors(h *node) {
 	h.color = red
 	h.left.color = black
 	h.right.color = black
+}
+
+func complement(h *node) {
+	if h.color == black {
+		h.color = red
+	} else {
+		h.color = black
+	}
+}
+
+func flipColorsComplement(h *node) {
+	complement(h)
+	complement(h.right)
+	complement(h.left)
 }
 
 func size(x *node) int {

@@ -3,12 +3,20 @@
 // Robert Sedgewick and Kevin Wayne.
 package redblackbst
 
+import (
+	"log"
+)
+
 // ugly type names to avoid collisions, for easy find/replace.
 
 type KType interface {
 	Compare(other KType) int
 }
 type VType interface{}
+
+func zeroVType() VType {
+	return nil
+}
 
 // RedBlack holds the state of a red black balanced search tree.
 type RedBlack struct {
@@ -26,9 +34,13 @@ func (r RedBlack) IsEmpty() bool {
 // Size of the tree.
 func (r RedBlack) Size() int { return size(r.root) }
 
-// Put a value in the tree at key `k`.
-func (r *RedBlack) Put(k KType, v VType) {
-	r.root = put(r.root, k, v)
+// Put a value in the tree at key `k`. The old value at `k` is returned
+// if the key was already present.
+func (r *RedBlack) Put(k KType, v VType) (old VType, overwrite bool) {
+	log.Printf("Put(%#v, %#v)", k, v)
+
+	r.root, old, overwrite = put(r.root, k, v)
+	return
 }
 
 // Get a value from the tree at key `k`. Returns false
@@ -40,6 +52,9 @@ func (r RedBlack) Get(k KType) (VType, bool) {
 
 // Min returns the smallest key/value in the tree, if it exists.
 func (r RedBlack) Min() (KType, VType, bool) {
+	if r.root == nil {
+		return nil, nil, false
+	}
 	h := min(r.root)
 	if h == nil {
 		return nil, nil, false
@@ -49,6 +64,9 @@ func (r RedBlack) Min() (KType, VType, bool) {
 
 // Max returns the largest key/value in the tree, if it exists.
 func (r RedBlack) Max() (KType, VType, bool) {
+	if r.root == nil {
+		return nil, nil, false
+	}
 	h := max(r.root)
 	if h == nil {
 		return nil, nil, false
@@ -134,6 +152,11 @@ func (r *RedBlack) DeleteMax() {
 
 // Delete key `k` from tree, if it exists.
 func (r *RedBlack) Delete(k KType) (ok bool) {
+	log.Printf("Delete(%#v)", k)
+
+	if r.root == nil {
+		return false
+	}
 	if !isRed(r.root.left) && !isRed(r.root.right) {
 		r.root.color = red
 	}
@@ -149,17 +172,21 @@ func (r *RedBlack) Clear() { r.root = nil }
 
 // maximum,minimum,floor,ceiling,select,rank,range
 
-func put(h *node, k KType, v VType) *node {
+func put(h *node, k KType, v VType) (*node, VType, bool) {
 	if h == nil {
-		return newNode(k, v, 1, red)
+		return newNode(k, v, 1, red), zeroVType(), false
 	}
 
+	var old VType
+	var overwrite bool
 	cmp := k.Compare(h.key)
 	if cmp < 0 {
-		h.left = put(h.left, k, v)
+		h.left, old, overwrite = put(h.left, k, v)
 	} else if cmp > 0 {
-		h.right = put(h.right, k, v)
+		h.right, old, overwrite = put(h.right, k, v)
 	} else {
+		overwrite = true
+		old = h.val
 		h.val = v
 	}
 
@@ -173,7 +200,7 @@ func put(h *node, k KType, v VType) *node {
 		flipColors(h)
 	}
 	h.n = size(h.left) + size(h.right) + 1
-	return h
+	return h, old, overwrite
 }
 
 func loopGet(x *node, k KType) (VType, bool) {
@@ -310,7 +337,7 @@ func keys(x *node, visit func(KType, VType) bool, lo, hi KType) bool {
 // deletions
 
 func moveRedLeft(h *node) *node {
-	flipColors(h)
+	flipColorsComplement(h)
 	if isRed(h.right.left) {
 		h.right = rotateRight(h.right)
 		h = rotateLeft(h)
@@ -319,7 +346,7 @@ func moveRedLeft(h *node) *node {
 }
 
 func moveRedRight(h *node) *node {
-	flipColors(h)
+	flipColorsComplement(h)
 	if !isRed(h.left.left) {
 		h = rotateRight(h)
 	}
@@ -352,35 +379,35 @@ func deleteMax(h *node) *node {
 }
 
 func delete(h *node, k KType) (*node, bool) {
+	var ok bool
+
 	if k.Compare(h.key) < 0 {
 		if !isRed(h.left) && !isRed(h.left.left) {
 			h = moveRedLeft(h)
 		}
-		var ok bool
+
 		h.left, ok = delete(h.left, k)
-		return balance(h), ok
-	}
-
-	if isRed(h.left) {
-		h = rotateRight(h)
-	}
-
-	if k.Compare(h.key) == 0 && h.right == nil {
-		return nil, true
-	}
-
-	if !isRed(h.right) && !isRed(h.right.left) {
-		h = moveRedRight(h)
-	}
-
-	var ok bool
-	if k.Compare(h.key) == 0 {
-		h.key = min(h.right).key
-		h.val, _ = recurGet(h.right, h.key)
-		h.right = deleteMin(h.right)
-		ok = true
 	} else {
-		h.right, ok = delete(h.right, k)
+		if isRed(h.left) {
+			h = rotateRight(h)
+		}
+
+		if k.Compare(h.key) == 0 && h.right == nil {
+			return nil, true
+		}
+
+		if !isRed(h.right) && !isRed(h.right.left) {
+			h = moveRedRight(h)
+		}
+
+		if k.Compare(h.key) == 0 {
+			h.val, _ = recurGet(h.right, min(h.right).key)
+			h.key = min(h.right).key
+			h.right = deleteMin(h.right)
+			ok = true
+		} else {
+			h.right, ok = delete(h.right, k)
+		}
 	}
 
 	return balance(h), ok
