@@ -1,4 +1,4 @@
-// Adapted from GoLLRB/llrb/llrb_test.go
+// Adapted from github.com/petar/GoLLRB/llrb/llrb_test.go
 
 // Copyright 2010 Petar Maymounkov. All rights reserved.
 // Use of this source code is governed by a BSD-style
@@ -7,7 +7,6 @@
 package redblackbst
 
 import (
-	"log"
 	"math/rand"
 	"testing"
 )
@@ -169,17 +168,13 @@ func TestRandomInsertPartialDeleteOrder(t *testing.T) {
 	perm := rand.Perm(n)
 	for i := 0; i < n; i++ {
 		vi := Int(perm[i])
-		log.Printf("Put(%v, %v)", vi, vi)
 		tree.Put(vi, vi)
 	}
 	for i := 1; i < n-1; i++ {
 		vi := Int(i)
-		log.Printf("Delete(%v)", vi)
-		old, ok := tree.Delete(vi)
+		_, ok := tree.Delete(vi)
 		if !ok {
 			t.Errorf("didn't delete %v", vi)
-		} else {
-			log.Printf("deleted %v", old)
 		}
 
 	}
@@ -195,7 +190,6 @@ func TestRandomInsertPartialDeleteOrder(t *testing.T) {
 			}
 		case 1:
 			if v.(Int) != Int(n-1) {
-				printTreeStats(tree, "bad content")
 				t.Errorf("expecting %d, got %d", n-1, v)
 			}
 		}

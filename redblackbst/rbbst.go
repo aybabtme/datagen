@@ -98,9 +98,6 @@ func (r RedBlack) Min() (KType, VType, bool) {
 		return nil, nil, false
 	}
 	h := min(r.root)
-	if h == nil {
-		return nil, nil, false
-	}
 	return h.key, h.val, true
 }
 
@@ -117,9 +114,6 @@ func (r RedBlack) Max() (KType, VType, bool) {
 		return nil, nil, false
 	}
 	h := max(r.root)
-	if h == nil {
-		return nil, nil, false
-	}
 	return h.key, h.val, true
 }
 
@@ -235,10 +229,8 @@ func (r RedBlack) Keys(visit func(KType, VType) bool) {
 	if !ok {
 		return
 	}
-	max, _, ok := r.Max()
-	if !ok {
-		return
-	}
+	// if the min exists, then the max must exist
+	max, _, _ := r.Max()
 	r.RangedKeys(min, max, visit)
 }
 
@@ -297,29 +289,29 @@ func deleteMin(h *node) (_ *node, oldk KType, oldv VType, ok bool) {
 }
 
 // DeleteMax removes the largest key and its value from the tree.
-func (r *RedBlack) DeleteMax() (old VType, ok bool) {
-	r.root, old, ok = deleteMax(r.root)
+func (r *RedBlack) DeleteMax() (oldk KType, oldv VType, ok bool) {
+	r.root, oldk, oldv, ok = deleteMax(r.root)
 	if !r.IsEmpty() {
 		r.root.color = black
 	}
 	return
 }
 
-func deleteMax(h *node) (_ *node, old VType, ok bool) {
+func deleteMax(h *node) (_ *node, oldk KType, oldv VType, ok bool) {
 	if h == nil {
-		return nil, old, ok
+		return nil, oldk, oldv, ok
 	}
 	if isRed(h.left) {
 		h = rotateRight(h)
 	}
 	if h.right == nil {
-		return nil, old, ok
+		return nil, h.key, h.val, true
 	}
 	if !isRed(h.right) && !isRed(h.right.left) {
 		h = moveRedRight(h)
 	}
-	h.right, old, ok = deleteMax(h.right)
-	return balance(h), old, ok
+	h.right, oldk, oldv, ok = deleteMax(h.right)
+	return balance(h), oldk, oldv, ok
 }
 
 // Delete key `k` from tree, if it exists.
