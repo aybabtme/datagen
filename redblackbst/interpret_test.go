@@ -9,18 +9,95 @@ import (
 
 var tests = []struct {
 	want graph
-	prog Program
+	prog P
 }{
 	{
-		prog: Program{
-			Name: "simple put",
-			Ops: []Op{
-				{"Put", "b"},
-				{"Put", "a"},
-			},
-		},
+		prog: P{Name: "simple put", Ops: []Op{
+			{"Put", "b"},
+			{"Put", "a"},
+		}},
 		want: makeGraph([]edge{
 			{from: "b",
+				to:    "a",
+				dir:   "left",
+				color: "red"},
+		}),
+	},
+	{
+		prog: P{Name: "simple put 2", Ops: []Op{
+			{"Put", "a"},
+			{"Put", "b"},
+		}},
+		want: makeGraph([]edge{
+			{from: "b",
+				to:    "a",
+				dir:   "left",
+				color: "red"},
+		}),
+	},
+	{
+		prog: P{Name: "two blacks", Ops: []Op{
+			{"Put", "a"},
+			{"Put", "e"},
+			{"Put", "s"},
+		}},
+		want: makeGraph([]edge{
+			{from: "e",
+				to:    "a",
+				dir:   "left",
+				color: "black"},
+			{from: "e",
+				to:    "s",
+				dir:   "right",
+				color: "black"},
+		}),
+	},
+
+	{
+		prog: P{Name: "two blacks, one red", Ops: []Op{
+			{"Put", "a"},
+			{"Put", "e"},
+			{"Put", "s"},
+			{"Put", "r"},
+		}},
+		want: makeGraph([]edge{
+			{from: "e",
+				to:    "a",
+				dir:   "left",
+				color: "black"},
+			{from: "e",
+				to:    "s",
+				dir:   "right",
+				color: "black"},
+			{from: "s",
+				to:    "r",
+				dir:   "left",
+				color: "red"},
+		}),
+	},
+
+	{
+		prog: P{Name: "two blacks, two red", Ops: []Op{
+			{"Put", "a"},
+			{"Put", "e"},
+			{"Put", "s"},
+			{"Put", "r"},
+			{"Put", "c"},
+		}},
+		want: makeGraph([]edge{
+			{from: "e",
+				to:    "c",
+				dir:   "left",
+				color: "black"},
+			{from: "e",
+				to:    "s",
+				dir:   "right",
+				color: "black"},
+			{from: "s",
+				to:    "r",
+				dir:   "left",
+				color: "red"},
+			{from: "c",
 				to:    "a",
 				dir:   "left",
 				color: "red"},
@@ -33,12 +110,12 @@ type Op struct {
 	Key string
 }
 
-type Program struct {
+type P struct {
 	Name string
 	Ops  []Op
 }
 
-func (p *Program) Run(tree *RedBlack) {
+func (p *P) Run(tree *RedBlack) {
 	for step, op := range p.Ops {
 		switch op.Op {
 		case "Put":
