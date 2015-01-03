@@ -260,6 +260,8 @@ func (p *P) Run(tree *RedBlack) {
 			tree.Put(K(op.Key), struct{}{})
 		case "Delete":
 			tree.Delete(K(op.Key))
+		case "DeleteMin":
+			tree.DeleteMin()
 		case "Print":
 			printTreeStats(tree, fmt.Sprintf("%s-%d", p.Name, step))
 		}

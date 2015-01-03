@@ -115,7 +115,7 @@ func openDot(r io.Reader) {
 func printTreeStats(tree *RedBlack, filename string) {
 
 	dot := bytes.NewBuffer(nil)
-	dotGraph(tree.root, dot, "tree")
+	dotGraph(tree.root, dot, filename)
 	openDot(dot)
 
 	specmap := map[nodeSpec]int{}

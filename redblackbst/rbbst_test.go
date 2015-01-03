@@ -64,8 +64,8 @@ func TestTreeEmpty(t *testing.T) {
 	if tree.IsEmpty() {
 		t.Fatalf("tree is empty: %#v", tree)
 	}
-	t.Logf("tree=%#v", tree)
-	if !tree.Delete(K("hello")) {
+
+	if _, ok := tree.Delete(K("hello")); !ok {
 		t.Errorf("couldn't delete key from tree: %#v", tree)
 	}
 	if !tree.IsEmpty() {
@@ -102,7 +102,7 @@ func TestCanDeleteSomethingAbsent(t *testing.T) {
 	tree := New()
 
 	k := K("im not there")
-	if tree.Delete(k) {
+	if _, ok := tree.Delete(k); ok {
 		t.Fatalf("shouldn't be able to delete %q", k)
 	}
 
@@ -137,6 +137,17 @@ func TestCanPutAndGetManyElements(t *testing.T) {
 
 	for k, v := range kv {
 		getCheckVal(t, tree, k, v)
+	}
+
+	for k, v := range kv {
+		old, ok := tree.Delete(k)
+		if !ok {
+			t.Fatalf("should have deleted %#v", k)
+		}
+
+		if old.(string) != v {
+			t.Fatalf("want %q got %q", v, old.(string))
+		}
 	}
 
 }
@@ -183,7 +194,7 @@ func TestCanPutAndDelete(t *testing.T) {
 			t.Fatalf("tree is  empty: %#v", tree)
 		}
 
-		if !tree.Delete(k) {
+		if _, ok := tree.Delete(k); !ok {
 			t.Errorf("couldn't delete key from tree: %#v", tree)
 		}
 	}
@@ -196,7 +207,7 @@ func TestCanPutAndDelete(t *testing.T) {
 	}
 }
 
-func TestPanicDelete(t *testing.T) {
+func TestRegressionPanicDelete(t *testing.T) {
 	tree := New()
 	tree.Put(K("key:abature"), "value:abature")
 	tree.Put(K("key:abbacy"), "value:abbacy")
@@ -217,8 +228,6 @@ func TestPanicDelete(t *testing.T) {
 	tree.Put(K("key:abatable"), "value:abatable")
 	tree.Put(K("key:abaxile"), "value:abaxile")
 
-	printTreeStats(tree, "start")
-
 	tree.Delete(K("key:abature"))
 	tree.Delete(K("key:abbacy"))
 	tree.Delete(K("key:abasia"))
@@ -227,16 +236,6 @@ func TestPanicDelete(t *testing.T) {
 	tree.Delete(K("key:abaton"))
 	tree.Delete(K("key:abaze"))
 	tree.Delete(K("key:abastardize"))
-
-	printTreeStats(tree, "before-before-panic")
-
 	tree.Delete(K("key:abatement"))
-
-	printTreeStats(tree, "before-panic")
-
-	defer func() {
-		printTreeStats(tree, "after-panic")
-	}()
-
 	tree.Delete(K("key:abater"))
 }

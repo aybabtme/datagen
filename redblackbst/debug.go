@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"log"
 )
 
 func nodes(x *node, visit func(*node) bool, lo, hi KType) bool {
@@ -30,10 +31,45 @@ func nodes(x *node, visit func(*node) bool, lo, hi KType) bool {
 	return true
 }
 
-func dotGraph(h *node, out io.Writer, name string) {
-	buf := bytes.NewBuffer([]byte("\t"))
+func checkIs23(tree *RedBlack) bool {
+	var nodeIs23 func(*node) bool
 
-	fmt.Fprintf(out, "digraph %s {\n", name)
+	visited := map[KType]struct{}{}
+
+	nodeIs23 = func(n *node) bool {
+
+		if n == nil {
+			return true
+		}
+
+		if _, ok := visited[n.key]; ok {
+			log.Panicf("cycle detected, already visited %p", n)
+		}
+		visited[n.key] = struct{}{}
+
+		if isRed(n) && isRed(n.left) {
+			log.Panicf("%q is red, %q also is red", n.key, n.left.key)
+		}
+
+		if isRed(n.right) {
+			log.Panicf("%q: right link %q is red", n.key, n.right.key)
+			return false
+		}
+		return nodeIs23(n.left) && nodeIs23(n.right)
+	}
+	if tree.root == nil {
+		return true
+	}
+
+	// the root itself is red by default for
+	// simplicity of the code, it changes nothing
+	return nodeIs23(tree.root.left) && nodeIs23(tree.root.right)
+}
+
+func dotGraph(h *node, out io.Writer, name string) {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(out, "digraph %q {\n", name)
+	fmt.Fprintf(buf, "\t%q -> ", name)
 	dotvisit(h, out, buf, true)
 	buf.WriteTo(out)
 	fmt.Fprintf(out, "}\n")
@@ -61,7 +97,7 @@ func dotvisit(x *node, nodes, edges io.Writer, isLeft bool) {
 	}
 
 	fmt.Fprintf(edges, "\"%p\" [label=%q, color=%s];\n", x, direction, color)
-	fmt.Fprintf(nodes, "\t\"%p\" [label=\"%p, %v\", shape = circle, color=%s];\n", x, x, x.key, color)
+	fmt.Fprintf(nodes, "\t\"%p\" [label=\"%v\", shape = circle, color=%s];\n", x, x.key, color)
 
 	fmt.Fprintf(edges, "\t\"%p\" -> ", x)
 	dotvisit(x.left, nodes, edges, true)

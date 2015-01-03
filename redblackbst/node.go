@@ -1,9 +1,5 @@
 package redblackbst
 
-import (
-// "log"
-)
-
 const (
 	red   = true
 	black = false
@@ -46,23 +42,9 @@ func rotateRight(h *node) *node {
 }
 
 func flipColors(h *node) {
-	h.color = red
-	h.left.color = black
-	h.right.color = black
-}
-
-func complement(h *node) {
-	if h.color == black {
-		h.color = red
-	} else {
-		h.color = black
-	}
-}
-
-func flipColorsComplement(h *node) {
-	complement(h)
-	complement(h.right)
-	complement(h.left)
+	h.color = !h.color
+	h.left.color = !h.left.color
+	h.right.color = !h.right.color
 }
 
 func size(x *node) int {
