@@ -55,20 +55,68 @@ generated with the custom type)`,
 
 			src := []byte(redblackbst)
 			src = bytes.Replace(src, []byte("package redblackbst"), []byte(pkgname), 1)
+
+			// need to replace Compare before replacing KType
+			src = replaceCompareFunc(ktype, src)
 			src = bytes.Replace(src, []byte("KType"), []byte(ktype), -1)
 			src = bytes.Replace(src, []byte("VType"), []byte(vtype), -1)
 			src = bytes.Replace(src, []byte("RedBlack"), []byte(typeName), -1)
 
-			switch ktype {
-			case "int", "int8", "int16", "int32", "int64",
-				"uint", "uint8", "uint16", "uint32", "uint64",
-				"float32", "float64":
-				src = bytes.Replace(src, []byte(".Compare(h.key)"), []byte("-h.key"), -1)
-			}
-
 			fmt.Println(string(src))
 		},
 	}
+}
+
+func replaceCompareFunc(ktype string, src []byte) []byte {
+	var tmpl string
+	orig := "func (r RedBlack) compareKType(a, b KType) int { return a.Compare(b) }"
+
+	switch ktype {
+
+	default:
+		// don't change anything by default
+		return src
+
+	case "int", "int8", "int16", "int32", "int64",
+		"uint", "uint8", "uint16", "uint32", "uint64":
+		tmpl = "func (r RedBlack) compareKType(a, b KType) int { return a-b }"
+
+	case "float32", "float64":
+		tmpl = `
+const e = 0.00000001
+
+func (r RedBlack) compareKType(a, b KType) int {
+    diff := (a-b)/a
+    if diff < -e {
+        return -1
+    } else if diff > e {
+        return 1
+    }
+    return 0
+}`
+
+	case "string":
+		tmpl = `
+func (r RedBlack) compareKType(a, b KType) int {
+    if a < b {
+        return -1
+    }
+    if b > a {
+        return 1
+    }
+    return 0
+}`
+
+	case "[]byte":
+		log.Printf("WARNING: using []byte as keys can lead to undefined behavior if the []byte are modified after insertion!!!")
+		tmpl = `
+// WARNING: using []byte as keys can lead to undefined behavior if the
+// []byte are modified after insertion!!!
+func compare(a, b KType) int { return bytes.Compare(a, b) }
+`
+
+	}
+	return bytes.Replace(src, []byte(orig), []byte(tmpl), -1)
 }
 
 func valOrDefault(ctx *cli.Context, f cli.StringFlag) string {

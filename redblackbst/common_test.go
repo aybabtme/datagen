@@ -128,13 +128,15 @@ func openDot(r io.Reader) {
 		panic(string(data))
 	}
 	svg := bytes.NewBuffer(data)
-	browser.OpenReader(svg)
+	if err := browser.OpenReader(svg); err != nil {
+		panic(err)
+	}
 }
 
 func printTreeStats(tree *RedBlack, filename string) {
 
 	dot := bytes.NewBuffer(nil)
-	dotGraph(tree.root, dot, filename)
+	tree.dotGraph(tree.root, dot, filename)
 	openDot(dot)
 
 	specmap := map[nodeSpec]int{}
@@ -144,7 +146,7 @@ func printTreeStats(tree *RedBlack, filename string) {
 		s := nodeSpec{
 			HasLeft:  x.left == nil,
 			HasRight: x.right == nil,
-			IsRed:    isRed(x),
+			IsRed:    x.isRed(),
 		}
 
 		specmap[s] = specmap[s] + 1
@@ -189,43 +191,4 @@ func nodes(x *node, visit func(*node) bool, lo, hi KType) bool {
 		}
 	}
 	return true
-}
-
-func dotGraph(h *node, out io.Writer, name string) {
-	buf := bytes.NewBuffer(nil)
-	fmt.Fprintf(out, "digraph %q {\n", name)
-	fmt.Fprintf(buf, "\t%q -> ", name)
-	dotvisit(h, out, buf, true)
-	buf.WriteTo(out)
-	fmt.Fprintf(out, "}\n")
-}
-
-func dotvisit(x *node, nodes, edges io.Writer, isLeft bool) {
-
-	var color string
-	if isRed(x) {
-		color = "red"
-	} else {
-		color = "black"
-	}
-
-	var direction string
-	if isLeft {
-		direction = "left"
-	} else {
-		direction = "right"
-	}
-
-	if x == nil {
-		fmt.Fprintf(edges, "nil [label=%q, color=%s];\n", direction, color)
-		return
-	}
-
-	fmt.Fprintf(edges, "\"%p\" [label=%q, color=%s];\n", x, direction, color)
-	fmt.Fprintf(nodes, "\t\"%p\" [label=\"%v\", shape = circle, color=%s];\n", x, x.key, color)
-
-	fmt.Fprintf(edges, "\t\"%p\" -> ", x)
-	dotvisit(x.left, nodes, edges, true)
-	fmt.Fprintf(edges, "\t\"%p\" -> ", x)
-	dotvisit(x.right, nodes, edges, false)
 }

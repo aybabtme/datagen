@@ -5,7 +5,7 @@ import (
 )
 
 func TestRegressionPanicDelete(t *testing.T) {
-	tree := New()
+	tree := NewRedBlack()
 	tree.Put(K("key:abature"), "value:abature")
 	tree.Put(K("key:abbacy"), "value:abbacy")
 	tree.Put(K("key:abasia"), "value:abasia")

@@ -18,7 +18,7 @@ func (i Int) Compare(other KType) int {
 }
 
 func TestCases(t *testing.T) {
-	tree := New()
+	tree := NewRedBlack()
 	tree.Put(Int(1), 1)
 	tree.Put(Int(1), 1)
 	if tree.Size() != 1 {
@@ -46,7 +46,7 @@ func TestCases(t *testing.T) {
 }
 
 func TestReverseInsertOrder(t *testing.T) {
-	tree := New()
+	tree := NewRedBlack()
 	n := 100
 	for i := 0; i < n; i++ {
 		tree.Put(Int(n-i), Int(n-i))
@@ -64,7 +64,7 @@ func TestReverseInsertOrder(t *testing.T) {
 }
 
 func TestRange(t *testing.T) {
-	tree := New()
+	tree := NewRedBlack()
 	order := []K{
 		"ab", "aba", "abc", "a", "aa", "aaa", "b", "a-", "a!",
 	}
@@ -87,7 +87,7 @@ func TestRange(t *testing.T) {
 }
 
 func TestRandomInsertOrder(t *testing.T) {
-	tree := New()
+	tree := NewRedBlack()
 	n := 1000
 	perm := rand.Perm(n)
 	for i := 0; i < n; i++ {
@@ -106,7 +106,7 @@ func TestRandomInsertOrder(t *testing.T) {
 }
 
 func TestRandomReplace(t *testing.T) {
-	tree := New()
+	tree := NewRedBlack()
 	n := 100
 	perm := rand.Perm(n)
 	for i := 0; i < n; i++ {
@@ -121,7 +121,7 @@ func TestRandomReplace(t *testing.T) {
 }
 
 func TestRandomInsertSequentialDelete(t *testing.T) {
-	tree := New()
+	tree := NewRedBlack()
 	n := 1000
 	perm := rand.Perm(n)
 	for i := 0; i < n; i++ {
@@ -137,7 +137,7 @@ func TestRandomInsertSequentialDelete(t *testing.T) {
 }
 
 func TestRandomInsertDeleteNonExistent(t *testing.T) {
-	tree := New()
+	tree := NewRedBlack()
 	n := 100
 	perm := rand.Perm(n)
 	for i := 0; i < n; i++ {
@@ -163,7 +163,7 @@ func TestRandomInsertDeleteNonExistent(t *testing.T) {
 }
 
 func TestRandomInsertPartialDeleteOrder(t *testing.T) {
-	tree := New()
+	tree := NewRedBlack()
 	n := 10
 	perm := rand.Perm(n)
 	for i := 0; i < n; i++ {
@@ -202,7 +202,7 @@ func TestRandomInsertPartialDeleteOrder(t *testing.T) {
 }
 
 func BenchmarkInsert(b *testing.B) {
-	tree := New()
+	tree := NewRedBlack()
 	for i := 0; i < b.N; i++ {
 		tree.Put(Int(b.N-i), Int(b.N-i))
 	}
@@ -210,7 +210,7 @@ func BenchmarkInsert(b *testing.B) {
 
 func BenchmarkDelete(b *testing.B) {
 	b.StopTimer()
-	tree := New()
+	tree := NewRedBlack()
 	for i := 0; i < b.N; i++ {
 		tree.Put(Int(b.N-i), Int(b.N-i))
 	}
@@ -222,7 +222,7 @@ func BenchmarkDelete(b *testing.B) {
 
 func BenchmarkDeleteMin(b *testing.B) {
 	b.StopTimer()
-	tree := New()
+	tree := NewRedBlack()
 	for i := 0; i < b.N; i++ {
 		tree.Put(Int(b.N-i), Int(b.N-i))
 	}

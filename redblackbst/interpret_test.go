@@ -271,7 +271,7 @@ func (p *P) Run(tree *RedBlack) {
 func TestScenarios(t *testing.T) {
 
 	for _, tt := range tests {
-		tree := New()
+		tree := NewRedBlack()
 		tt.prog.Run(tree)
 
 		want := tt.want
@@ -320,7 +320,7 @@ func toGraph(tree *RedBlack) graph {
 
 		if n.left != nil {
 			var leftColor string
-			if isRed(n.left) {
+			if n.left.isRed() {
 				leftColor = "red"
 			} else {
 				leftColor = "black"
@@ -335,7 +335,7 @@ func toGraph(tree *RedBlack) graph {
 		}
 		if n.right != nil {
 			var rightColor string
-			if isRed(n.right) {
+			if n.right.isRed() {
 				rightColor = "red"
 			} else {
 				rightColor = "black"

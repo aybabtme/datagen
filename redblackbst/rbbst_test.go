@@ -1,6 +1,7 @@
 package redblackbst
 
 import (
+	"bytes"
 	"math/rand"
 	"reflect"
 	"testing"
@@ -42,7 +43,7 @@ func getCheckVal(t *testing.T, tree *RedBlack, k KType, want VType) {
 }
 
 func TestTreeEmpty(t *testing.T) {
-	tree := New()
+	tree := NewRedBlack()
 	if !tree.IsEmpty() {
 		t.Fatalf("tree is not empty: %#v", tree)
 	}
@@ -62,7 +63,7 @@ func TestTreeEmpty(t *testing.T) {
 }
 
 func TestTreeSize(t *testing.T) {
-	tree := New()
+	tree := NewRedBlack()
 	if tree.Size() != 0 {
 		t.Fatalf("tree is not empty: %#v", tree)
 	}
@@ -75,7 +76,7 @@ func TestTreeSize(t *testing.T) {
 }
 
 func TestCanPutAndGet(t *testing.T) {
-	tree := New()
+	tree := NewRedBlack()
 	k := K("hello")
 	want := "world"
 
@@ -87,7 +88,7 @@ func TestCanPutAndGet(t *testing.T) {
 }
 
 func TestCanDeleteSomethingAbsent(t *testing.T) {
-	tree := New()
+	tree := NewRedBlack()
 
 	k := K("im not there")
 	if _, ok := tree.Delete(k); ok {
@@ -100,7 +101,7 @@ func TestCanDeleteSomethingAbsent(t *testing.T) {
 func TestCanPutAndGetManyElements(t *testing.T) {
 
 	kv := makeKV()
-	tree := New()
+	tree := NewRedBlack()
 
 	i := 0
 	for k, v := range kv {
@@ -141,7 +142,7 @@ func TestCanPutAndGetManyElements(t *testing.T) {
 }
 
 func TestCanPutAndGetAndOverwrite(t *testing.T) {
-	tree := New()
+	tree := NewRedBlack()
 	k := K("hello")
 	want := "world"
 	nextWant := "le monde"
@@ -160,7 +161,7 @@ func TestCanPutAndGetAndOverwrite(t *testing.T) {
 }
 
 func TestCanPutAndDelete(t *testing.T) {
-	tree := New()
+	tree := NewRedBlack()
 	k := K("hello")
 	want := "world"
 
@@ -196,7 +197,7 @@ func TestCanPutAndDelete(t *testing.T) {
 }
 
 func TestEmptyTreeHasNoMin(t *testing.T) {
-	tree := New()
+	tree := NewRedBlack()
 	k, v, ok := tree.Min()
 	if ok {
 		t.Fatalf("should have no min, got %v-%v", k, v)
@@ -204,7 +205,7 @@ func TestEmptyTreeHasNoMin(t *testing.T) {
 }
 
 func TestEmptyTreeCorrectMin(t *testing.T) {
-	tree := New()
+	tree := NewRedBlack()
 
 	perm := rand.Perm(100)
 
@@ -224,7 +225,7 @@ func TestEmptyTreeCorrectMin(t *testing.T) {
 }
 
 func TestEmptyTreeHasNoMax(t *testing.T) {
-	tree := New()
+	tree := NewRedBlack()
 	k, v, ok := tree.Max()
 	if ok {
 		t.Fatalf("should have no max, got %v-%v", k, v)
@@ -232,7 +233,7 @@ func TestEmptyTreeHasNoMax(t *testing.T) {
 }
 
 func TestEmptyTreeCorrectMax(t *testing.T) {
-	tree := New()
+	tree := NewRedBlack()
 
 	perm := rand.Perm(100)
 
@@ -252,7 +253,7 @@ func TestEmptyTreeCorrectMax(t *testing.T) {
 }
 
 func TestEmptyTreeHasMaxOneElement(t *testing.T) {
-	tree := New()
+	tree := NewRedBlack()
 
 	tree.Put(Int(100), Int(100))
 	tree.Put(Int(98), Int(98))
@@ -272,7 +273,7 @@ func TestEmptyTreeHasMaxOneElement(t *testing.T) {
 }
 
 func TestGetCorrectFloor(t *testing.T) {
-	tree := New()
+	tree := NewRedBlack()
 	k, v, ok := tree.Floor(Int(0))
 	if ok {
 		t.Errorf("should not have found floor, got %v->%v", k, v)
@@ -320,7 +321,7 @@ func TestGetCorrectFloor(t *testing.T) {
 }
 
 func TestGetCorrectCeiling(t *testing.T) {
-	tree := New()
+	tree := NewRedBlack()
 	k, v, ok := tree.Ceiling(Int(0))
 	if ok {
 		t.Errorf("should not have found ceiling, got %v->%v", k, v)
@@ -369,7 +370,7 @@ func TestGetCorrectCeiling(t *testing.T) {
 
 func TestGetCorrectSelect(t *testing.T) {
 
-	tree := New()
+	tree := NewRedBlack()
 
 	gotk, gotv, ok := tree.Select(0)
 	if ok {
@@ -411,7 +412,7 @@ func TestGetCorrectSelect(t *testing.T) {
 
 func TestGetCorrectRank(t *testing.T) {
 
-	tree := New()
+	tree := NewRedBlack()
 
 	if tree.Rank(Int(0)) != 0 {
 		t.Errorf("should not have a rank, got %v", tree.Rank(Int(0)))
@@ -438,7 +439,7 @@ func TestGetCorrectRank(t *testing.T) {
 }
 
 func TestCanDeleteMin(t *testing.T) {
-	tree := New()
+	tree := NewRedBlack()
 	kv := map[Int]Int{}
 	want := []Int{}
 	for i := 0; i < 100; i++ {
@@ -467,7 +468,7 @@ func TestCanDeleteMin(t *testing.T) {
 }
 
 func TestCanDeleteMax(t *testing.T) {
-	tree := New()
+	tree := NewRedBlack()
 	kv := map[Int]Int{}
 	want := []Int{}
 	for i := 100; i > 0; i-- {
@@ -499,7 +500,7 @@ func TestCanDeleteMax(t *testing.T) {
 }
 
 func TestCanVisitAllKeysWhenPutBackward(t *testing.T) {
-	tree := New()
+	tree := NewRedBlack()
 	want := make([]Int, 100)
 	for i := 99; i >= 0; i-- {
 		tree.Put(Int(i), Int(i))
@@ -520,7 +521,7 @@ func TestCanVisitAllKeysWhenPutBackward(t *testing.T) {
 }
 
 func TestCanVisitAllKeys(t *testing.T) {
-	tree := New()
+	tree := NewRedBlack()
 	kv := map[Int]Int{}
 	want := []Int{}
 	for i := 0; i < 100; i++ {
@@ -546,7 +547,7 @@ func TestCanVisitAllKeys(t *testing.T) {
 }
 
 func TestCanAbortVisitingAllKeys(t *testing.T) {
-	tree := New()
+	tree := NewRedBlack()
 	want := []Int{}
 	for i := 0; i < 100; i++ {
 		want = append(want, Int(i))
@@ -569,10 +570,23 @@ func TestCanAbortVisitingAllKeys(t *testing.T) {
 }
 
 func TestCanVisitEmptyTree(t *testing.T) {
-	tree := New()
+	tree := NewRedBlack()
 	tree.Keys(func(k KType, v VType) bool {
 		t.Errorf("shouldn not be called, got %v->%v", k, v)
 		return true
 	})
 
+}
+
+func TestCanExportToDot(t *testing.T) {
+	tree := NewRedBlack()
+	for i := 0; i < 100; i++ {
+		tree.Put(Int(i), Int(i))
+	}
+	buf := bytes.NewBuffer(nil)
+	_, err := tree.DotGraph(buf, "test-graph")
+	if err != nil {
+		t.Fatal(err)
+	}
+	openDot(buf)
 }

@@ -1,13 +1,21 @@
 package datagen
 
+import (
+	"bytes"
+	"fmt"
+	"io"
+)
+
 // SortedIntToIntMap is a sorted map built on a left leaning red black balanced
 // search sorted map. It stores int values, keyed by int.
 type SortedIntToIntMap struct {
 	root *node
 }
 
-// New creates a sorted map.
-func New() *SortedIntToIntMap { return &SortedIntToIntMap{} }
+func (r SortedIntToIntMap) compareint(a, b int) int { return a - b }
+
+// NewSortedIntToIntMap creates a sorted map.
+func NewSortedIntToIntMap() *SortedIntToIntMap { return &SortedIntToIntMap{} }
 
 // IsEmpty tells if the sorted map contains no key/value.
 func (r SortedIntToIntMap) IsEmpty() bool {
@@ -15,7 +23,7 @@ func (r SortedIntToIntMap) IsEmpty() bool {
 }
 
 // Size of the sorted map.
-func (r SortedIntToIntMap) Size() int { return size(r.root) }
+func (r SortedIntToIntMap) Size() int { return r.root.size() }
 
 // Clear all the values in the sorted map.
 func (r *SortedIntToIntMap) Clear() { r.root = nil }
@@ -23,48 +31,49 @@ func (r *SortedIntToIntMap) Clear() { r.root = nil }
 // Put a value in the sorted map at key `k`. The old value at `k` is returned
 // if the key was already present.
 func (r *SortedIntToIntMap) Put(k int, v int) (old int, overwrite bool) {
-	r.root, old, overwrite = put(r.root, k, v)
+	r.root, old, overwrite = r.put(r.root, k, v)
 	return
 }
 
-func put(h *node, k int, v int) (_ *node, old int, overwrite bool) {
+func (r *SortedIntToIntMap) put(h *node, k int, v int) (_ *node, old int, overwrite bool) {
 	if h == nil {
-		return newNode(k, v, 1, red), old, overwrite
+		n := &node{key: k, val: v, n: 1, color: red}
+		return n, old, overwrite
 	}
 
-	cmp := k-h.key
+	cmp := r.compareint(k, h.key)
 	if cmp < 0 {
-		h.left, old, overwrite = put(h.left, k, v)
+		h.left, old, overwrite = r.put(h.left, k, v)
 	} else if cmp > 0 {
-		h.right, old, overwrite = put(h.right, k, v)
+		h.right, old, overwrite = r.put(h.right, k, v)
 	} else {
 		overwrite = true
 		old = h.val
 		h.val = v
 	}
 
-	if isRed(h.right) && !isRed(h.left) {
-		h = rotateLeft(h)
+	if h.right.isRed() && !h.left.isRed() {
+		h = r.rotateLeft(h)
 	}
-	if isRed(h.left) && isRed(h.left.left) {
-		h = rotateRight(h)
+	if h.left.isRed() && h.left.left.isRed() {
+		h = r.rotateRight(h)
 	}
-	if isRed(h.left) && isRed(h.right) {
-		flipColors(h)
+	if h.left.isRed() && h.right.isRed() {
+		r.flipColors(h)
 	}
-	h.n = size(h.left) + size(h.right) + 1
+	h.n = h.left.size() + h.right.size() + 1
 	return h, old, overwrite
 }
 
 // Get a value from the sorted map at key `k`. Returns false
 // if the key doesn't exist.
 func (r SortedIntToIntMap) Get(k int) (int, bool) {
-	return loopGet(r.root, k)
+	return r.loopGet(r.root, k)
 }
 
-func loopGet(h *node, k int) (v int, ok bool) {
+func (r SortedIntToIntMap) loopGet(h *node, k int) (v int, ok bool) {
 	for h != nil {
-		cmp := k-h.key
+		cmp := r.compareint(k, h.key)
 		if cmp == 0 {
 			return h.val, true
 		} else if cmp < 0 {
@@ -78,7 +87,7 @@ func loopGet(h *node, k int) (v int, ok bool) {
 
 // Has tells if a value exists at key `k`. This is short hand for `Get.
 func (r SortedIntToIntMap) Has(k int) bool {
-	_, ok := loopGet(r.root, k)
+	_, ok := r.loopGet(r.root, k)
 	return ok
 }
 
@@ -87,15 +96,15 @@ func (r SortedIntToIntMap) Min() (k int, v int, ok bool) {
 	if r.root == nil {
 		return
 	}
-	h := min(r.root)
+	h := r.min(r.root)
 	return h.key, h.val, true
 }
 
-func min(x *node) *node {
+func (r SortedIntToIntMap) min(x *node) *node {
 	if x.left == nil {
 		return x
 	}
-	return min(x.left)
+	return r.min(x.left)
 }
 
 // Max returns the largest key/value in the sorted map, if it exists.
@@ -103,39 +112,39 @@ func (r SortedIntToIntMap) Max() (k int, v int, ok bool) {
 	if r.root == nil {
 		return
 	}
-	h := max(r.root)
+	h := r.max(r.root)
 	return h.key, h.val, true
 }
 
-func max(x *node) *node {
+func (r SortedIntToIntMap) max(x *node) *node {
 	if x.right == nil {
 		return x
 	}
-	return max(x.right)
+	return r.max(x.right)
 }
 
 // Floor returns the largest key/value in the sorted map that is smaller than
 // `k`.
 func (r SortedIntToIntMap) Floor(key int) (k int, v int, ok bool) {
-	x := floor(r.root, key)
+	x := r.floor(r.root, key)
 	if x == nil {
 		return
 	}
 	return x.key, x.val, true
 }
 
-func floor(h *node, k int) *node {
+func (r SortedIntToIntMap) floor(h *node, k int) *node {
 	if h == nil {
 		return nil
 	}
-	cmp := k-h.key
+	cmp := r.compareint(k, h.key)
 	if cmp == 0 {
 		return h
 	}
 	if cmp < 0 {
-		return floor(h.left, k)
+		return r.floor(h.left, k)
 	}
-	t := floor(h.right, k)
+	t := r.floor(h.right, k)
 	if t != nil {
 		return t
 	}
@@ -145,25 +154,25 @@ func floor(h *node, k int) *node {
 // Ceiling returns the smallest key/value in the sorted map that is larger than
 // `k`.
 func (r SortedIntToIntMap) Ceiling(key int) (k int, v int, ok bool) {
-	x := ceiling(r.root, key)
+	x := r.ceiling(r.root, key)
 	if x == nil {
 		return
 	}
 	return x.key, x.val, true
 }
 
-func ceiling(h *node, k int) *node {
+func (r SortedIntToIntMap) ceiling(h *node, k int) *node {
 	if h == nil {
 		return nil
 	}
-	cmp := k-h.key
+	cmp := r.compareint(k, h.key)
 	if cmp == 0 {
 		return h
 	}
 	if cmp > 0 {
-		return ceiling(h.right, k)
+		return r.ceiling(h.right, k)
 	}
-	t := ceiling(h.left, k)
+	t := r.ceiling(h.left, k)
 	if t != nil {
 		return t
 	}
@@ -172,22 +181,22 @@ func ceiling(h *node, k int) *node {
 
 // Select key of rank k, meaning the k-th biggest int in the sorted map.
 func (r SortedIntToIntMap) Select(key int) (k int, v int, ok bool) {
-	x := nodeselect(r.root, key)
+	x := r.nodeselect(r.root, key)
 	if x == nil {
 		return
 	}
 	return x.key, x.val, true
 }
 
-func nodeselect(x *node, k int) *node {
+func (r SortedIntToIntMap) nodeselect(x *node, k int) *node {
 	if x == nil {
 		return nil
 	}
-	t := size(x.left)
+	t := x.left.size()
 	if t > k {
-		return nodeselect(x.left, k)
+		return r.nodeselect(x.left, k)
 	} else if t < k {
-		return nodeselect(x.right, k-t-1)
+		return r.nodeselect(x.right, k-t-1)
 	} else {
 		return x
 	}
@@ -195,20 +204,20 @@ func nodeselect(x *node, k int) *node {
 
 // Rank is the number of keys less than `k`.
 func (r SortedIntToIntMap) Rank(k int) int {
-	return keyrank(k, r.root)
+	return r.keyrank(k, r.root)
 }
 
-func keyrank(k int, h *node) int {
+func (r SortedIntToIntMap) keyrank(k int, h *node) int {
 	if h == nil {
 		return 0
 	}
-	cmp := k-h.key
+	cmp := r.compareint(k, h.key)
 	if cmp < 0 {
-		return keyrank(k, h.left)
+		return r.keyrank(k, h.left)
 	} else if cmp > 0 {
-		return 1 + size(h.left) + keyrank(k, h.right)
+		return 1 + h.left.size() + r.keyrank(k, h.right)
 	} else {
-		return size(h.left)
+		return h.left.size()
 	}
 }
 
@@ -227,17 +236,17 @@ func (r SortedIntToIntMap) Keys(visit func(int, int) bool) {
 // RangedKeys visit each keys between lo and hi in the sorted map, in order.
 // It stops when visit returns false.
 func (r SortedIntToIntMap) RangedKeys(lo, hi int, visit func(int, int) bool) {
-	keys(r.root, visit, lo, hi)
+	r.keys(r.root, visit, lo, hi)
 }
 
-func keys(h *node, visit func(int, int) bool, lo, hi int) bool {
+func (r SortedIntToIntMap) keys(h *node, visit func(int, int) bool, lo, hi int) bool {
 	if h == nil {
 		return true
 	}
-	cmplo := lo-h.key
-	cmphi := hi-h.key
+	cmplo := r.compareint(lo, h.key)
+	cmphi := r.compareint(hi, h.key)
 	if cmplo < 0 {
-		if !keys(h.left, visit, lo, hi) {
+		if !r.keys(h.left, visit, lo, hi) {
 			return false
 		}
 	}
@@ -247,7 +256,7 @@ func keys(h *node, visit func(int, int) bool, lo, hi int) bool {
 		}
 	}
 	if cmphi > 0 {
-		if !keys(h.right, visit, lo, hi) {
+		if !r.keys(h.right, visit, lo, hi) {
 			return false
 		}
 	}
@@ -256,14 +265,14 @@ func keys(h *node, visit func(int, int) bool, lo, hi int) bool {
 
 // DeleteMin removes the smallest key and its value from the sorted map.
 func (r *SortedIntToIntMap) DeleteMin() (oldk int, oldv int, ok bool) {
-	r.root, oldk, oldv, ok = deleteMin(r.root)
+	r.root, oldk, oldv, ok = r.deleteMin(r.root)
 	if !r.IsEmpty() {
 		r.root.color = black
 	}
 	return
 }
 
-func deleteMin(h *node) (_ *node, oldk int, oldv int, ok bool) {
+func (r *SortedIntToIntMap) deleteMin(h *node) (_ *node, oldk int, oldv int, ok bool) {
 	if h == nil {
 		return nil, oldk, oldv, false
 	}
@@ -271,37 +280,37 @@ func deleteMin(h *node) (_ *node, oldk int, oldv int, ok bool) {
 	if h.left == nil {
 		return nil, h.key, h.val, true
 	}
-	if !isRed(h.left) && !isRed(h.left.left) {
-		h = moveRedLeft(h)
+	if !h.left.isRed() && !h.left.left.isRed() {
+		h = r.moveRedLeft(h)
 	}
-	h.left, oldk, oldv, ok = deleteMin(h.left)
-	return balance(h), oldk, oldv, ok
+	h.left, oldk, oldv, ok = r.deleteMin(h.left)
+	return r.balance(h), oldk, oldv, ok
 }
 
 // DeleteMax removes the largest key and its value from the sorted map.
 func (r *SortedIntToIntMap) DeleteMax() (oldk int, oldv int, ok bool) {
-	r.root, oldk, oldv, ok = deleteMax(r.root)
+	r.root, oldk, oldv, ok = r.deleteMax(r.root)
 	if !r.IsEmpty() {
 		r.root.color = black
 	}
 	return
 }
 
-func deleteMax(h *node) (_ *node, oldk int, oldv int, ok bool) {
+func (r *SortedIntToIntMap) deleteMax(h *node) (_ *node, oldk int, oldv int, ok bool) {
 	if h == nil {
 		return nil, oldk, oldv, ok
 	}
-	if isRed(h.left) {
-		h = rotateRight(h)
+	if h.left.isRed() {
+		h = r.rotateRight(h)
 	}
 	if h.right == nil {
 		return nil, h.key, h.val, true
 	}
-	if !isRed(h.right) && !isRed(h.right.left) {
-		h = moveRedRight(h)
+	if !h.right.isRed() && !h.right.left.isRed() {
+		h = r.moveRedRight(h)
 	}
-	h.right, oldk, oldv, ok = deleteMax(h.right)
-	return balance(h), oldk, oldv, ok
+	h.right, oldk, oldv, ok = r.deleteMax(h.right)
+	return r.balance(h), oldk, oldv, ok
 }
 
 // Delete key `k` from sorted map, if it exists.
@@ -309,93 +318,93 @@ func (r *SortedIntToIntMap) Delete(k int) (old int, ok bool) {
 	if r.root == nil {
 		return
 	}
-	r.root, old, ok = delete(r.root, k)
+	r.root, old, ok = r.delete(r.root, k)
 	if !r.IsEmpty() {
 		r.root.color = black
 	}
 	return
 }
 
-func delete(h *node, k int) (_ *node, old int, ok bool) {
+func (r *SortedIntToIntMap) delete(h *node, k int) (_ *node, old int, ok bool) {
 
 	if h == nil {
 		return h, old, false
 	}
 
-	if k-h.key < 0 {
+	if r.compareint(k, h.key) < 0 {
 		if h.left == nil {
 			return h, old, false
 		}
 
-		if !isRed(h.left) && !isRed(h.left.left) {
-			h = moveRedLeft(h)
+		if !h.left.isRed() && !h.left.left.isRed() {
+			h = r.moveRedLeft(h)
 		}
 
-		h.left, old, ok = delete(h.left, k)
-		h = balance(h)
+		h.left, old, ok = r.delete(h.left, k)
+		h = r.balance(h)
 		return h, old, ok
 	}
 
-	if isRed(h.left) {
-		h = rotateRight(h)
+	if h.left.isRed() {
+		h = r.rotateRight(h)
 	}
 
-	if k-h.key == 0 && h.right == nil {
+	if r.compareint(k, h.key) == 0 && h.right == nil {
 		return nil, h.val, true
 	}
 
-	if h.right != nil && !isRed(h.right) && !isRed(h.right.left) {
-		h = moveRedRight(h)
+	if h.right != nil && !h.right.isRed() && !h.right.left.isRed() {
+		h = r.moveRedRight(h)
 	}
 
-	if k-h.key == 0 {
+	if r.compareint(k, h.key) == 0 {
 
 		var subk int
 		var subv int
-		h.right, subk, subv, ok = deleteMin(h.right)
+		h.right, subk, subv, ok = r.deleteMin(h.right)
 
 		old, h.key, h.val = h.val, subk, subv
 		ok = true
 	} else {
-		h.right, old, ok = delete(h.right, k)
+		h.right, old, ok = r.delete(h.right, k)
 	}
 
-	h = balance(h)
+	h = r.balance(h)
 	return h, old, ok
 }
 
 // deletions
 
-func moveRedLeft(h *node) *node {
-	flipColors(h)
-	if isRed(h.right.left) {
-		h.right = rotateRight(h.right)
-		h = rotateLeft(h)
-		flipColors(h)
+func (r *SortedIntToIntMap) moveRedLeft(h *node) *node {
+	r.flipColors(h)
+	if h.right.left.isRed() {
+		h.right = r.rotateRight(h.right)
+		h = r.rotateLeft(h)
+		r.flipColors(h)
 	}
 	return h
 }
 
-func moveRedRight(h *node) *node {
-	flipColors(h)
-	if isRed(h.left.left) {
-		h = rotateRight(h)
-		flipColors(h)
+func (r *SortedIntToIntMap) moveRedRight(h *node) *node {
+	r.flipColors(h)
+	if h.left.left.isRed() {
+		h = r.rotateRight(h)
+		r.flipColors(h)
 	}
 	return h
 }
 
-func balance(h *node) *node {
-	if isRed(h.right) {
-		h = rotateLeft(h)
+func (r *SortedIntToIntMap) balance(h *node) *node {
+	if h.right.isRed() {
+		h = r.rotateLeft(h)
 	}
-	if isRed(h.left) && isRed(h.left.left) {
-		h = rotateRight(h)
+	if h.left.isRed() && h.left.left.isRed() {
+		h = r.rotateRight(h)
 	}
-	if isRed(h.left) && isRed(h.right) {
-		flipColors(h)
+	if h.left.isRed() && h.right.isRed() {
+		r.flipColors(h)
 	}
-	h.n = size(h.left) + size(h.right) + 1
+	h.n = h.left.size() + h.right.size() + 1
 	return h
 }
 
@@ -418,40 +427,116 @@ func newNode(k int, v int, n int, color bool) *node {
 	return &node{key: k, val: v, n: n, color: color}
 }
 
-func isRed(x *node) bool { return (x != nil) && (x.color == red) }
+func (x *node) isRed() bool { return (x != nil) && (x.color == red) }
 
-func rotateLeft(h *node) *node {
+func (r *SortedIntToIntMap) rotateLeft(h *node) *node {
 	x := h.right
 	h.right = x.left
 	x.left = h
 	x.color = h.color
 	h.color = red
 	x.n = h.n
-	h.n = 1 + size(h.left) + size(h.right)
+	h.n = 1 + h.left.size() + h.right.size()
 	return x
 }
 
-func rotateRight(h *node) *node {
+func (r *SortedIntToIntMap) rotateRight(h *node) *node {
 	x := h.left
 	h.left = x.right
 	x.right = h
 	x.color = h.color
 	h.color = red
 	x.n = h.n
-	h.n = 1 + size(h.left) + size(h.right)
+	h.n = 1 + h.left.size() + h.right.size()
 	return x
 }
 
-func flipColors(h *node) {
+func (r *SortedIntToIntMap) flipColors(h *node) {
 	h.color = !h.color
 	h.left.color = !h.left.color
 	h.right.color = !h.right.color
 }
 
-func size(x *node) int {
+func (x *node) size() int {
 	if x == nil {
 		return 0
 	}
 	return x.n
 }
 
+// debugging
+
+// DotGraph exports the sorted map into DOT format.
+func (r SortedIntToIntMap) DotGraph(out io.Writer, name string) (int, error) {
+	return r.dotGraph(r.root, out, name)
+}
+
+func (r SortedIntToIntMap) dotGraph(h *node, out io.Writer, name string) (n int, err error) {
+	var m int
+	buf := bytes.NewBuffer(nil)
+	m, err = fmt.Fprintf(out, "digraph %q {\n", name)
+	n += m
+	if err != nil {
+		return
+	}
+	fmt.Fprintf(buf, "\t%q -> ", name)
+	m, err = r.dotvisit(h, out, buf, true)
+	n += m
+	if err != nil {
+		return
+	}
+
+	var k int64
+	k, err = buf.WriteTo(out)
+	n += int(k)
+	if err != nil {
+		return
+	}
+
+	m, err = fmt.Fprintf(out, "}\n")
+	n += m
+	return
+}
+
+func (r SortedIntToIntMap) dotvisit(x *node, nodes io.Writer, edges *bytes.Buffer, isLeft bool) (n int, err error) {
+
+	var color string
+	if x.isRed() {
+		color = "red"
+	} else {
+		color = "black"
+	}
+
+	var direction string
+	if isLeft {
+		direction = "left"
+	} else {
+		direction = "right"
+	}
+
+	if x == nil {
+		fmt.Fprintf(edges, "nil [label=%q, color=%s];\n", direction, color)
+		return
+	}
+
+	fmt.Fprintf(edges, "\"%p\" [label=%q, color=%s];\n", x, direction, color)
+
+	var m int
+	m, err = fmt.Fprintf(nodes, "\t\"%p\" [label=\"%v\", shape = circle, color=%s];\n", x, x.key, color)
+	n += m
+	if err != nil {
+		return
+	}
+
+	fmt.Fprintf(edges, "\t\"%p\" -> ", x)
+	m, err = r.dotvisit(x.left, nodes, edges, true)
+	n += m
+	if err != nil {
+		return
+	}
+
+	fmt.Fprintf(edges, "\t\"%p\" -> ", x)
+	m, err = r.dotvisit(x.right, nodes, edges, false)
+	n += m
+	return
+}
