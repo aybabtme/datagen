@@ -1,38 +1,38 @@
-package redblackbst
+package datagen
 
-// RedBlack is a sorted map built on a left leaning red black balanced
-// search sorted map. It stores VType values, keyed by KType.
-type RedBlack struct {
+// SortedIntToIntMap is a sorted map built on a left leaning red black balanced
+// search sorted map. It stores int values, keyed by int.
+type SortedIntToIntMap struct {
 	root *node
 }
 
 // New creates a sorted map.
-func New() *RedBlack { return &RedBlack{} }
+func New() *SortedIntToIntMap { return &SortedIntToIntMap{} }
 
 // IsEmpty tells if the sorted map contains no key/value.
-func (r RedBlack) IsEmpty() bool {
+func (r SortedIntToIntMap) IsEmpty() bool {
 	return r.root == nil
 }
 
 // Size of the sorted map.
-func (r RedBlack) Size() int { return size(r.root) }
+func (r SortedIntToIntMap) Size() int { return size(r.root) }
 
 // Clear all the values in the sorted map.
-func (r *RedBlack) Clear() { r.root = nil }
+func (r *SortedIntToIntMap) Clear() { r.root = nil }
 
 // Put a value in the sorted map at key `k`. The old value at `k` is returned
 // if the key was already present.
-func (r *RedBlack) Put(k KType, v VType) (old VType, overwrite bool) {
+func (r *SortedIntToIntMap) Put(k int, v int) (old int, overwrite bool) {
 	r.root, old, overwrite = put(r.root, k, v)
 	return
 }
 
-func put(h *node, k KType, v VType) (_ *node, old VType, overwrite bool) {
+func put(h *node, k int, v int) (_ *node, old int, overwrite bool) {
 	if h == nil {
 		return newNode(k, v, 1, red), old, overwrite
 	}
 
-	cmp := k.Compare(h.key)
+	cmp := k-h.key
 	if cmp < 0 {
 		h.left, old, overwrite = put(h.left, k, v)
 	} else if cmp > 0 {
@@ -58,13 +58,13 @@ func put(h *node, k KType, v VType) (_ *node, old VType, overwrite bool) {
 
 // Get a value from the sorted map at key `k`. Returns false
 // if the key doesn't exist.
-func (r RedBlack) Get(k KType) (VType, bool) {
+func (r SortedIntToIntMap) Get(k int) (int, bool) {
 	return loopGet(r.root, k)
 }
 
-func loopGet(h *node, k KType) (v VType, ok bool) {
+func loopGet(h *node, k int) (v int, ok bool) {
 	for h != nil {
-		cmp := k.Compare(h.key)
+		cmp := k-h.key
 		if cmp == 0 {
 			return h.val, true
 		} else if cmp < 0 {
@@ -77,13 +77,13 @@ func loopGet(h *node, k KType) (v VType, ok bool) {
 }
 
 // Has tells if a value exists at key `k`. This is short hand for `Get.
-func (r RedBlack) Has(k KType) bool {
+func (r SortedIntToIntMap) Has(k int) bool {
 	_, ok := loopGet(r.root, k)
 	return ok
 }
 
 // Min returns the smallest key/value in the sorted map, if it exists.
-func (r RedBlack) Min() (k KType, v VType, ok bool) {
+func (r SortedIntToIntMap) Min() (k int, v int, ok bool) {
 	if r.root == nil {
 		return
 	}
@@ -99,7 +99,7 @@ func min(x *node) *node {
 }
 
 // Max returns the largest key/value in the sorted map, if it exists.
-func (r RedBlack) Max() (k KType, v VType, ok bool) {
+func (r SortedIntToIntMap) Max() (k int, v int, ok bool) {
 	if r.root == nil {
 		return
 	}
@@ -116,7 +116,7 @@ func max(x *node) *node {
 
 // Floor returns the largest key/value in the sorted map that is smaller than
 // `k`.
-func (r RedBlack) Floor(key KType) (k KType, v VType, ok bool) {
+func (r SortedIntToIntMap) Floor(key int) (k int, v int, ok bool) {
 	x := floor(r.root, key)
 	if x == nil {
 		return
@@ -124,11 +124,11 @@ func (r RedBlack) Floor(key KType) (k KType, v VType, ok bool) {
 	return x.key, x.val, true
 }
 
-func floor(h *node, k KType) *node {
+func floor(h *node, k int) *node {
 	if h == nil {
 		return nil
 	}
-	cmp := k.Compare(h.key)
+	cmp := k-h.key
 	if cmp == 0 {
 		return h
 	}
@@ -144,7 +144,7 @@ func floor(h *node, k KType) *node {
 
 // Ceiling returns the smallest key/value in the sorted map that is larger than
 // `k`.
-func (r RedBlack) Ceiling(key KType) (k KType, v VType, ok bool) {
+func (r SortedIntToIntMap) Ceiling(key int) (k int, v int, ok bool) {
 	x := ceiling(r.root, key)
 	if x == nil {
 		return
@@ -152,11 +152,11 @@ func (r RedBlack) Ceiling(key KType) (k KType, v VType, ok bool) {
 	return x.key, x.val, true
 }
 
-func ceiling(h *node, k KType) *node {
+func ceiling(h *node, k int) *node {
 	if h == nil {
 		return nil
 	}
-	cmp := k.Compare(h.key)
+	cmp := k-h.key
 	if cmp == 0 {
 		return h
 	}
@@ -170,8 +170,8 @@ func ceiling(h *node, k KType) *node {
 	return h
 }
 
-// Select key of rank k, meaning the k-th biggest KType in the sorted map.
-func (r RedBlack) Select(key int) (k KType, v VType, ok bool) {
+// Select key of rank k, meaning the k-th biggest int in the sorted map.
+func (r SortedIntToIntMap) Select(key int) (k int, v int, ok bool) {
 	x := nodeselect(r.root, key)
 	if x == nil {
 		return
@@ -194,15 +194,15 @@ func nodeselect(x *node, k int) *node {
 }
 
 // Rank is the number of keys less than `k`.
-func (r RedBlack) Rank(k KType) int {
+func (r SortedIntToIntMap) Rank(k int) int {
 	return keyrank(k, r.root)
 }
 
-func keyrank(k KType, h *node) int {
+func keyrank(k int, h *node) int {
 	if h == nil {
 		return 0
 	}
-	cmp := k.Compare(h.key)
+	cmp := k-h.key
 	if cmp < 0 {
 		return keyrank(k, h.left)
 	} else if cmp > 0 {
@@ -214,7 +214,7 @@ func keyrank(k KType, h *node) int {
 
 // Keys visit each keys in the sorted map, in order.
 // It stops when visit returns false.
-func (r RedBlack) Keys(visit func(KType, VType) bool) {
+func (r SortedIntToIntMap) Keys(visit func(int, int) bool) {
 	min, _, ok := r.Min()
 	if !ok {
 		return
@@ -226,16 +226,16 @@ func (r RedBlack) Keys(visit func(KType, VType) bool) {
 
 // RangedKeys visit each keys between lo and hi in the sorted map, in order.
 // It stops when visit returns false.
-func (r RedBlack) RangedKeys(lo, hi KType, visit func(KType, VType) bool) {
+func (r SortedIntToIntMap) RangedKeys(lo, hi int, visit func(int, int) bool) {
 	keys(r.root, visit, lo, hi)
 }
 
-func keys(h *node, visit func(KType, VType) bool, lo, hi KType) bool {
+func keys(h *node, visit func(int, int) bool, lo, hi int) bool {
 	if h == nil {
 		return true
 	}
-	cmplo := lo.Compare(h.key)
-	cmphi := hi.Compare(h.key)
+	cmplo := lo-h.key
+	cmphi := hi-h.key
 	if cmplo < 0 {
 		if !keys(h.left, visit, lo, hi) {
 			return false
@@ -255,7 +255,7 @@ func keys(h *node, visit func(KType, VType) bool, lo, hi KType) bool {
 }
 
 // DeleteMin removes the smallest key and its value from the sorted map.
-func (r *RedBlack) DeleteMin() (oldk KType, oldv VType, ok bool) {
+func (r *SortedIntToIntMap) DeleteMin() (oldk int, oldv int, ok bool) {
 	r.root, oldk, oldv, ok = deleteMin(r.root)
 	if !r.IsEmpty() {
 		r.root.color = black
@@ -263,7 +263,7 @@ func (r *RedBlack) DeleteMin() (oldk KType, oldv VType, ok bool) {
 	return
 }
 
-func deleteMin(h *node) (_ *node, oldk KType, oldv VType, ok bool) {
+func deleteMin(h *node) (_ *node, oldk int, oldv int, ok bool) {
 	if h == nil {
 		return nil, oldk, oldv, false
 	}
@@ -279,7 +279,7 @@ func deleteMin(h *node) (_ *node, oldk KType, oldv VType, ok bool) {
 }
 
 // DeleteMax removes the largest key and its value from the sorted map.
-func (r *RedBlack) DeleteMax() (oldk KType, oldv VType, ok bool) {
+func (r *SortedIntToIntMap) DeleteMax() (oldk int, oldv int, ok bool) {
 	r.root, oldk, oldv, ok = deleteMax(r.root)
 	if !r.IsEmpty() {
 		r.root.color = black
@@ -287,7 +287,7 @@ func (r *RedBlack) DeleteMax() (oldk KType, oldv VType, ok bool) {
 	return
 }
 
-func deleteMax(h *node) (_ *node, oldk KType, oldv VType, ok bool) {
+func deleteMax(h *node) (_ *node, oldk int, oldv int, ok bool) {
 	if h == nil {
 		return nil, oldk, oldv, ok
 	}
@@ -305,7 +305,7 @@ func deleteMax(h *node) (_ *node, oldk KType, oldv VType, ok bool) {
 }
 
 // Delete key `k` from sorted map, if it exists.
-func (r *RedBlack) Delete(k KType) (old VType, ok bool) {
+func (r *SortedIntToIntMap) Delete(k int) (old int, ok bool) {
 	if r.root == nil {
 		return
 	}
@@ -316,13 +316,13 @@ func (r *RedBlack) Delete(k KType) (old VType, ok bool) {
 	return
 }
 
-func delete(h *node, k KType) (_ *node, old VType, ok bool) {
+func delete(h *node, k int) (_ *node, old int, ok bool) {
 
 	if h == nil {
 		return h, old, false
 	}
 
-	if k.Compare(h.key) < 0 {
+	if k-h.key < 0 {
 		if h.left == nil {
 			return h, old, false
 		}
@@ -340,7 +340,7 @@ func delete(h *node, k KType) (_ *node, old VType, ok bool) {
 		h = rotateRight(h)
 	}
 
-	if k.Compare(h.key) == 0 && h.right == nil {
+	if k-h.key == 0 && h.right == nil {
 		return nil, h.val, true
 	}
 
@@ -348,10 +348,10 @@ func delete(h *node, k KType) (_ *node, old VType, ok bool) {
 		h = moveRedRight(h)
 	}
 
-	if k.Compare(h.key) == 0 {
+	if k-h.key == 0 {
 
-		var subk KType
-		var subv VType
+		var subk int
+		var subv int
 		h.right, subk, subv, ok = deleteMin(h.right)
 
 		old, h.key, h.val = h.val, subk, subv
@@ -407,14 +407,14 @@ const (
 )
 
 type node struct {
-	key         KType
-	val         VType
+	key         int
+	val         int
 	left, right *node
 	n           int
 	color       bool
 }
 
-func newNode(k KType, v VType, n int, color bool) *node {
+func newNode(k int, v int, n int, color bool) *node {
 	return &node{key: k, val: v, n: n, color: color}
 }
 
@@ -454,3 +454,4 @@ func size(x *node) int {
 	}
 	return x.n
 }
+

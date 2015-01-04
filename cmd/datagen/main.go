@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"log"
 	"os"
@@ -51,11 +52,21 @@ generated with the custom type)`,
 
 			cwd, _ := os.Getwd()
 			pkgname := fmt.Sprintf("package %s", filepath.Base(cwd))
-			customPkg := strings.Replace(redblackbst, "package redblackbst", pkgname, 1)
-			customKeys := strings.Replace(customPkg, "KType", ktype, -1)
-			customVals := strings.Replace(customKeys, "VType", vtype, -1)
-			renamedType := strings.Replace(customVals, "RedBlack", typeName, -1)
-			fmt.Println(renamedType)
+
+			src := []byte(redblackbst)
+			src = bytes.Replace(src, []byte("package redblackbst"), []byte(pkgname), 1)
+			src = bytes.Replace(src, []byte("KType"), []byte(ktype), -1)
+			src = bytes.Replace(src, []byte("VType"), []byte(vtype), -1)
+			src = bytes.Replace(src, []byte("RedBlack"), []byte(typeName), -1)
+
+			switch ktype {
+			case "int", "int8", "int16", "int32", "int64",
+				"uint", "uint8", "uint16", "uint32", "uint64",
+				"float32", "float64":
+				src = bytes.Replace(src, []byte(".Compare(h.key)"), []byte("-h.key"), -1)
+			}
+
+			fmt.Println(string(src))
 		},
 	}
 }
