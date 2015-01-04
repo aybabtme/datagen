@@ -54,7 +54,7 @@ generated with the custom type)`,
 			cwd, _ := os.Getwd()
 			pkgname := fmt.Sprintf("package %s", filepath.Base(cwd))
 
-			src := []byte(redblackbst)
+			src := []byte(redblackbstMap)
 			src = bytes.Replace(src, []byte("package redblackbst"), []byte(pkgname), 1)
 
 			// need to replace Compare before replacing KType
@@ -62,7 +62,7 @@ generated with the custom type)`,
 			src = bytes.Replace(src, []byte("KType"), []byte(ktype), -1)
 			src = bytes.Replace(src, []byte("VType"), []byte(vtype), -1)
 			src = bytes.Replace(src, []byte("RedBlack"), []byte(typeName), -1)
-			src = bytes.Replace(src, []byte("treenode"), []byte(nodeName), -1)
+			src = bytes.Replace(src, []byte("mapnode"), []byte(nodeName), -1)
 
 			fmt.Println(string(src))
 		},
