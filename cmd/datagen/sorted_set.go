@@ -33,7 +33,7 @@ generated with the custom type)`,
 				kname = kname[1:]
 			}
 			if len(kname) > 2 && kname[:2] == "[]" {
-				kname = strings.Title(kname[2:])
+				kname = strings.Title(kname[2:]) + "s"
 			}
 
 			typeName := fmt.Sprintf("Sorted%sSet", strings.Title(kname))

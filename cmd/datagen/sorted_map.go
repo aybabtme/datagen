@@ -36,17 +36,17 @@ generated with the custom type)`,
 
 			kname := ktype
 			vname := vtype
-			if kname == "[]byte" {
-				kname = "Bytes"
-			}
-			if []byte(kname)[0] == '*' {
+			if len(kname) > 1 && []byte(kname)[0] == '*' {
 				kname = kname[1:]
 			}
-			if vname == "[]byte" {
-				vname = "Bytes"
+			if len(kname) > 2 && kname[:2] == "[]" {
+				kname = strings.Title(kname[2:]) + "s"
 			}
-			if []byte(vname)[0] == '*' {
+			if len(vname) > 1 && []byte(vname)[0] == '*' {
 				vname = vname[1:]
+			}
+			if len(vname) > 2 && vname[:2] == "[]" {
+				vname = strings.Title(vname[2:]) + "s"
 			}
 			typeName := fmt.Sprintf("Sorted%sTo%sMap", strings.Title(kname), strings.Title(vname))
 			nodeName := fmt.Sprintf("node%sTo%s", strings.Title(kname), strings.Title(vname))
@@ -74,10 +74,6 @@ func replaceCompareFunc(ktype string, src []byte) []byte {
 	orig := "func (r RedBlack) compare(a, b KType) int { return a.Compare(b) }"
 
 	switch ktype {
-
-	default:
-		// don't change anything by default
-		return src
 
 	case "int", "int8", "int16", "int32", "int64",
 		"uint", "uint8", "uint16", "uint32", "uint64":
@@ -117,6 +113,33 @@ func (r RedBlack) compare(a, b KType) int {
 func  (r RedBlack) compare(a, b KType) int { return bytes.Compare(a, b) }
 `
 
+	default:
+
+		// if storing slices, use `len()` for comparison
+		if len(ktype) > 2 && ktype[:2] == "[]" {
+			log.Printf("%s: order will be determined based on value of len(%s)", ktype, ktype)
+			tmpl = fmt.Sprintf(
+				"func (r RedBlack) compare(a, b %s) int { return len(a)-len(b) }",
+				ktype,
+			)
+		} else {
+			// otherwise don't change anything by default, let the user
+			// provide a `Compare` func
+			log.Printf("type %q will need to implement a Compare func: %s",
+				ktype,
+				fmt.Sprintf(`
+	func (%s %s) Compare(other %s) int {
+		if k > other {
+			return 1
+		} else if k < other {
+			return -1
+		}
+		return 0
+	}`, ktype[:1], ktype, ktype))
+			return src
+		}
+
 	}
+
 	return bytes.Replace(src, []byte(orig), []byte(tmpl), -1)
 }
