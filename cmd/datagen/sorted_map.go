@@ -77,7 +77,7 @@ func replaceCompareFunc(ktype string, src []byte) []byte {
 
 	case "int", "int8", "int16", "int32", "int64",
 		"uint", "uint8", "uint16", "uint32", "uint64":
-		tmpl = "func (r RedBlack) compare(a, b KType) int { return a-b }"
+		tmpl = "func (r RedBlack) compare(a, b KType) int { return int(a) - int(b) }"
 
 	case "float32", "float64":
 		tmpl = `
