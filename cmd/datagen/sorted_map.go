@@ -128,10 +128,10 @@ func  (r RedBlack) compare(a, b KType) int { return bytes.Compare(a, b) }
 			log.Printf("type %q will need to implement a Compare func: %s",
 				ktype,
 				fmt.Sprintf(`
-	func (%s %s) Compare(other %s) int {
-		if k > other {
+	func (%[1]s %s) Compare(other %s) int {
+		if %[1]s > other {
 			return 1
-		} else if k < other {
+		} else if %[1]s < other {
 			return -1
 		}
 		return 0

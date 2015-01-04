@@ -35,7 +35,9 @@ func main() {
 	app.Commands = append(app.Commands, sortedMap())
 	app.Commands = append(app.Commands, sortedSet())
 
-	app.Run(os.Args)
+	if err := app.Run(os.Args); err != nil {
+		log.Fatal(err)
+	}
 }
 
 func valOrDefault(ctx *cli.Context, f cli.StringFlag) string {
