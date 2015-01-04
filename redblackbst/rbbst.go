@@ -9,10 +9,10 @@ import (
 // RedBlack is a sorted map built on a left leaning red black balanced
 // search sorted map. It stores VType values, keyed by KType.
 type RedBlack struct {
-	root *node
+	root *treenode
 }
 
-func (r RedBlack) compareKType(a, b KType) int { return a.Compare(b) }
+func (r RedBlack) compare(a, b KType) int { return a.Compare(b) }
 
 // NewRedBlack creates a sorted map.
 func NewRedBlack() *RedBlack { return &RedBlack{} }
@@ -35,13 +35,13 @@ func (r *RedBlack) Put(k KType, v VType) (old VType, overwrite bool) {
 	return
 }
 
-func (r *RedBlack) put(h *node, k KType, v VType) (_ *node, old VType, overwrite bool) {
+func (r *RedBlack) put(h *treenode, k KType, v VType) (_ *treenode, old VType, overwrite bool) {
 	if h == nil {
-		n := &node{key: k, val: v, n: 1, color: red}
+		n := &treenode{key: k, val: v, n: 1, colorRed: true}
 		return n, old, overwrite
 	}
 
-	cmp := r.compareKType(k, h.key)
+	cmp := r.compare(k, h.key)
 	if cmp < 0 {
 		h.left, old, overwrite = r.put(h.left, k, v)
 	} else if cmp > 0 {
@@ -71,9 +71,9 @@ func (r RedBlack) Get(k KType) (VType, bool) {
 	return r.loopGet(r.root, k)
 }
 
-func (r RedBlack) loopGet(h *node, k KType) (v VType, ok bool) {
+func (r RedBlack) loopGet(h *treenode, k KType) (v VType, ok bool) {
 	for h != nil {
-		cmp := r.compareKType(k, h.key)
+		cmp := r.compare(k, h.key)
 		if cmp == 0 {
 			return h.val, true
 		} else if cmp < 0 {
@@ -100,7 +100,7 @@ func (r RedBlack) Min() (k KType, v VType, ok bool) {
 	return h.key, h.val, true
 }
 
-func (r RedBlack) min(x *node) *node {
+func (r RedBlack) min(x *treenode) *treenode {
 	if x.left == nil {
 		return x
 	}
@@ -116,7 +116,7 @@ func (r RedBlack) Max() (k KType, v VType, ok bool) {
 	return h.key, h.val, true
 }
 
-func (r RedBlack) max(x *node) *node {
+func (r RedBlack) max(x *treenode) *treenode {
 	if x.right == nil {
 		return x
 	}
@@ -133,11 +133,11 @@ func (r RedBlack) Floor(key KType) (k KType, v VType, ok bool) {
 	return x.key, x.val, true
 }
 
-func (r RedBlack) floor(h *node, k KType) *node {
+func (r RedBlack) floor(h *treenode, k KType) *treenode {
 	if h == nil {
 		return nil
 	}
-	cmp := r.compareKType(k, h.key)
+	cmp := r.compare(k, h.key)
 	if cmp == 0 {
 		return h
 	}
@@ -161,11 +161,11 @@ func (r RedBlack) Ceiling(key KType) (k KType, v VType, ok bool) {
 	return x.key, x.val, true
 }
 
-func (r RedBlack) ceiling(h *node, k KType) *node {
+func (r RedBlack) ceiling(h *treenode, k KType) *treenode {
 	if h == nil {
 		return nil
 	}
-	cmp := r.compareKType(k, h.key)
+	cmp := r.compare(k, h.key)
 	if cmp == 0 {
 		return h
 	}
@@ -188,7 +188,7 @@ func (r RedBlack) Select(key int) (k KType, v VType, ok bool) {
 	return x.key, x.val, true
 }
 
-func (r RedBlack) nodeselect(x *node, k int) *node {
+func (r RedBlack) nodeselect(x *treenode, k int) *treenode {
 	if x == nil {
 		return nil
 	}
@@ -207,11 +207,11 @@ func (r RedBlack) Rank(k KType) int {
 	return r.keyrank(k, r.root)
 }
 
-func (r RedBlack) keyrank(k KType, h *node) int {
+func (r RedBlack) keyrank(k KType, h *treenode) int {
 	if h == nil {
 		return 0
 	}
-	cmp := r.compareKType(k, h.key)
+	cmp := r.compare(k, h.key)
 	if cmp < 0 {
 		return r.keyrank(k, h.left)
 	} else if cmp > 0 {
@@ -239,12 +239,12 @@ func (r RedBlack) RangedKeys(lo, hi KType, visit func(KType, VType) bool) {
 	r.keys(r.root, visit, lo, hi)
 }
 
-func (r RedBlack) keys(h *node, visit func(KType, VType) bool, lo, hi KType) bool {
+func (r RedBlack) keys(h *treenode, visit func(KType, VType) bool, lo, hi KType) bool {
 	if h == nil {
 		return true
 	}
-	cmplo := r.compareKType(lo, h.key)
-	cmphi := r.compareKType(hi, h.key)
+	cmplo := r.compare(lo, h.key)
+	cmphi := r.compare(hi, h.key)
 	if cmplo < 0 {
 		if !r.keys(h.left, visit, lo, hi) {
 			return false
@@ -267,12 +267,12 @@ func (r RedBlack) keys(h *node, visit func(KType, VType) bool, lo, hi KType) boo
 func (r *RedBlack) DeleteMin() (oldk KType, oldv VType, ok bool) {
 	r.root, oldk, oldv, ok = r.deleteMin(r.root)
 	if !r.IsEmpty() {
-		r.root.color = black
+		r.root.colorRed = false
 	}
 	return
 }
 
-func (r *RedBlack) deleteMin(h *node) (_ *node, oldk KType, oldv VType, ok bool) {
+func (r *RedBlack) deleteMin(h *treenode) (_ *treenode, oldk KType, oldv VType, ok bool) {
 	if h == nil {
 		return nil, oldk, oldv, false
 	}
@@ -291,12 +291,12 @@ func (r *RedBlack) deleteMin(h *node) (_ *node, oldk KType, oldv VType, ok bool)
 func (r *RedBlack) DeleteMax() (oldk KType, oldv VType, ok bool) {
 	r.root, oldk, oldv, ok = r.deleteMax(r.root)
 	if !r.IsEmpty() {
-		r.root.color = black
+		r.root.colorRed = false
 	}
 	return
 }
 
-func (r *RedBlack) deleteMax(h *node) (_ *node, oldk KType, oldv VType, ok bool) {
+func (r *RedBlack) deleteMax(h *treenode) (_ *treenode, oldk KType, oldv VType, ok bool) {
 	if h == nil {
 		return nil, oldk, oldv, ok
 	}
@@ -320,18 +320,18 @@ func (r *RedBlack) Delete(k KType) (old VType, ok bool) {
 	}
 	r.root, old, ok = r.delete(r.root, k)
 	if !r.IsEmpty() {
-		r.root.color = black
+		r.root.colorRed = false
 	}
 	return
 }
 
-func (r *RedBlack) delete(h *node, k KType) (_ *node, old VType, ok bool) {
+func (r *RedBlack) delete(h *treenode, k KType) (_ *treenode, old VType, ok bool) {
 
 	if h == nil {
 		return h, old, false
 	}
 
-	if r.compareKType(k, h.key) < 0 {
+	if r.compare(k, h.key) < 0 {
 		if h.left == nil {
 			return h, old, false
 		}
@@ -349,7 +349,7 @@ func (r *RedBlack) delete(h *node, k KType) (_ *node, old VType, ok bool) {
 		h = r.rotateRight(h)
 	}
 
-	if r.compareKType(k, h.key) == 0 && h.right == nil {
+	if r.compare(k, h.key) == 0 && h.right == nil {
 		return nil, h.val, true
 	}
 
@@ -357,7 +357,7 @@ func (r *RedBlack) delete(h *node, k KType) (_ *node, old VType, ok bool) {
 		h = r.moveRedRight(h)
 	}
 
-	if r.compareKType(k, h.key) == 0 {
+	if r.compare(k, h.key) == 0 {
 
 		var subk KType
 		var subv VType
@@ -375,7 +375,7 @@ func (r *RedBlack) delete(h *node, k KType) (_ *node, old VType, ok bool) {
 
 // deletions
 
-func (r *RedBlack) moveRedLeft(h *node) *node {
+func (r *RedBlack) moveRedLeft(h *treenode) *treenode {
 	r.flipColors(h)
 	if h.right.left.isRed() {
 		h.right = r.rotateRight(h.right)
@@ -385,7 +385,7 @@ func (r *RedBlack) moveRedLeft(h *node) *node {
 	return h
 }
 
-func (r *RedBlack) moveRedRight(h *node) *node {
+func (r *RedBlack) moveRedRight(h *treenode) *treenode {
 	r.flipColors(h)
 	if h.left.left.isRed() {
 		h = r.rotateRight(h)
@@ -394,7 +394,7 @@ func (r *RedBlack) moveRedRight(h *node) *node {
 	return h
 }
 
-func (r *RedBlack) balance(h *node) *node {
+func (r *RedBlack) balance(h *treenode) *treenode {
 	if h.right.isRed() {
 		h = r.rotateLeft(h)
 	}
@@ -408,52 +408,47 @@ func (r *RedBlack) balance(h *node) *node {
 	return h
 }
 
-func (r *RedBlack) rotateLeft(h *node) *node {
+func (r *RedBlack) rotateLeft(h *treenode) *treenode {
 	x := h.right
 	h.right = x.left
 	x.left = h
-	x.color = h.color
-	h.color = red
+	x.colorRed = h.colorRed
+	h.colorRed = true
 	x.n = h.n
 	h.n = 1 + h.left.size() + h.right.size()
 	return x
 }
 
-func (r *RedBlack) rotateRight(h *node) *node {
+func (r *RedBlack) rotateRight(h *treenode) *treenode {
 	x := h.left
 	h.left = x.right
 	x.right = h
-	x.color = h.color
-	h.color = red
+	x.colorRed = h.colorRed
+	h.colorRed = true
 	x.n = h.n
 	h.n = 1 + h.left.size() + h.right.size()
 	return x
 }
 
-func (r *RedBlack) flipColors(h *node) {
-	h.color = !h.color
-	h.left.color = !h.left.color
-	h.right.color = !h.right.color
+func (r *RedBlack) flipColors(h *treenode) {
+	h.colorRed = !h.colorRed
+	h.left.colorRed = !h.left.colorRed
+	h.right.colorRed = !h.right.colorRed
 }
 
 // nodes
 
-const (
-	red   = true
-	black = false
-)
-
-type node struct {
+type treenode struct {
 	key         KType
 	val         VType
-	left, right *node
+	left, right *treenode
 	n           int
-	color       bool
+	colorRed    bool
 }
 
-func (x *node) isRed() bool { return (x != nil) && (x.color == red) }
+func (x *treenode) isRed() bool { return (x != nil) && (x.colorRed == true) }
 
-func (x *node) size() int {
+func (x *treenode) size() int {
 	if x == nil {
 		return 0
 	}
@@ -467,7 +462,7 @@ func (r RedBlack) DotGraph(out io.Writer, name string) (int, error) {
 	return r.dotGraph(r.root, out, name)
 }
 
-func (r RedBlack) dotGraph(h *node, out io.Writer, name string) (n int, err error) {
+func (r RedBlack) dotGraph(h *treenode, out io.Writer, name string) (n int, err error) {
 	nodes := bytes.NewBuffer(nil)
 	edges := bytes.NewBuffer(nil)
 
@@ -481,7 +476,7 @@ func (r RedBlack) dotGraph(h *node, out io.Writer, name string) (n int, err erro
 	return out.Write(nodes.Bytes())
 }
 
-func (r RedBlack) dotvisit(x *node, nodes io.Writer, edges *bytes.Buffer, isLeft bool) {
+func (r RedBlack) dotvisit(x *treenode, nodes io.Writer, edges *bytes.Buffer, isLeft bool) {
 
 	var color string
 	if x.isRed() {

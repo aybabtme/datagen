@@ -141,7 +141,7 @@ func printTreeStats(tree *RedBlack, filename string) {
 
 	specmap := map[nodeSpec]int{}
 
-	visit := func(x *node) bool {
+	visit := func(x *treenode) bool {
 
 		s := nodeSpec{
 			HasLeft:  x.left == nil,
@@ -169,7 +169,7 @@ func printTreeStats(tree *RedBlack, filename string) {
 	}
 }
 
-func nodes(x *node, visit func(*node) bool, lo, hi KType) bool {
+func nodes(x *treenode, visit func(*treenode) bool, lo, hi KType) bool {
 	if x == nil {
 		return true
 	}

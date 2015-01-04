@@ -48,7 +48,17 @@ generated with the custom type)`,
 		Action: func(ctx *cli.Context) {
 			ktype := valOrDefault(ctx, kTypeFlag)
 			vtype := valOrDefault(ctx, vTypeFlag)
-			typeName := fmt.Sprintf("Sorted%sTo%sMap", strings.Title(ktype), strings.Title(vtype))
+
+			kname := ktype
+			vname := vtype
+			if kname == "[]byte" {
+				kname = "Bytes"
+			}
+			if vname == "[]byte" {
+				vname = "Bytes"
+			}
+			typeName := fmt.Sprintf("Sorted%sTo%sMap", strings.Title(kname), strings.Title(vname))
+			nodeName := fmt.Sprintf("node%sTo%s", strings.Title(kname), strings.Title(vname))
 
 			cwd, _ := os.Getwd()
 			pkgname := fmt.Sprintf("package %s", filepath.Base(cwd))
@@ -61,6 +71,7 @@ generated with the custom type)`,
 			src = bytes.Replace(src, []byte("KType"), []byte(ktype), -1)
 			src = bytes.Replace(src, []byte("VType"), []byte(vtype), -1)
 			src = bytes.Replace(src, []byte("RedBlack"), []byte(typeName), -1)
+			src = bytes.Replace(src, []byte("treenode"), []byte(nodeName), -1)
 
 			fmt.Println(string(src))
 		},
@@ -69,7 +80,7 @@ generated with the custom type)`,
 
 func replaceCompareFunc(ktype string, src []byte) []byte {
 	var tmpl string
-	orig := "func (r RedBlack) compareKType(a, b KType) int { return a.Compare(b) }"
+	orig := "func (r RedBlack) compare(a, b KType) int { return a.Compare(b) }"
 
 	switch ktype {
 
@@ -79,13 +90,13 @@ func replaceCompareFunc(ktype string, src []byte) []byte {
 
 	case "int", "int8", "int16", "int32", "int64",
 		"uint", "uint8", "uint16", "uint32", "uint64":
-		tmpl = "func (r RedBlack) compareKType(a, b KType) int { return a-b }"
+		tmpl = "func (r RedBlack) compare(a, b KType) int { return a-b }"
 
 	case "float32", "float64":
 		tmpl = `
 const e = 0.00000001
 
-func (r RedBlack) compareKType(a, b KType) int {
+func (r RedBlack) compare(a, b KType) int {
     diff := (a-b)/a
     if diff < -e {
         return -1
@@ -97,7 +108,7 @@ func (r RedBlack) compareKType(a, b KType) int {
 
 	case "string":
 		tmpl = `
-func (r RedBlack) compareKType(a, b KType) int {
+func (r RedBlack) compare(a, b KType) int {
     if a < b {
         return -1
     }
@@ -112,7 +123,7 @@ func (r RedBlack) compareKType(a, b KType) int {
 		tmpl = `
 // WARNING: using []byte as keys can lead to undefined behavior if the
 // []byte are modified after insertion!!!
-func compare(a, b KType) int { return bytes.Compare(a, b) }
+func  (r RedBlack) compare(a, b KType) int { return bytes.Compare(a, b) }
 `
 
 	}
