@@ -39,8 +39,14 @@ generated with the custom type)`,
 			if kname == "[]byte" {
 				kname = "Bytes"
 			}
+			if []byte(kname)[0] == '*' {
+				kname = kname[1:]
+			}
 			if vname == "[]byte" {
 				vname = "Bytes"
+			}
+			if []byte(vname)[0] == '*' {
+				vname = vname[1:]
 			}
 			typeName := fmt.Sprintf("Sorted%sTo%sMap", strings.Title(kname), strings.Title(vname))
 			nodeName := fmt.Sprintf("node%sTo%s", strings.Title(kname), strings.Title(vname))
@@ -97,7 +103,7 @@ func (r RedBlack) compare(a, b KType) int {
     if a < b {
         return -1
     }
-    if b > a {
+    if a > b {
         return 1
     }
     return 0
