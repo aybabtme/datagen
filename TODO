@@ -1,0 +1,16 @@
+
+Code gen:
+* Generate tests for generated code.
+* Generate benchmarks for generated code.
+* Format and check the generated code compiles before writing the output.
+
+Datastructures:
+* Benchmark all the methods of the datastructures.
+* Implement more things like:
+   * Concurrent safe structures.
+   * List.
+   * Queue.
+   * Heap.
+   * Hash.
+   * Graph.
+   * Probabilistic structures.

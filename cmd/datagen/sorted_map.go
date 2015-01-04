@@ -135,7 +135,7 @@ func  (r RedBlack) compare(a, b KType) int { return bytes.Compare(a, b) }
 			return -1
 		}
 		return 0
-	}`, ktype[:1], ktype, ktype))
+	}`, strings.ToLower(ktype[:1]), ktype, ktype))
 			return src
 		}
 
