@@ -1,25 +1,27 @@
 package redblackbst
 
-// RedBlack holds the state of a red black balanced search tree.
+// RedBlack is a sorted map built on a left leaning red black balanced
+// search sorted map. It stores VType values, keyed by KType. KType must
+// implement the `Compare` method.
 type RedBlack struct {
 	root *node
 }
 
-// New creates a red black balanced search tree.
+// New creates a sorted map.
 func New() *RedBlack { return &RedBlack{} }
 
-// IsEmpty tells if the tree contains no key/value.
+// IsEmpty tells if the sorted map contains no key/value.
 func (r RedBlack) IsEmpty() bool {
 	return r.root == nil
 }
 
-// Size of the tree.
+// Size of the sorted map.
 func (r RedBlack) Size() int { return size(r.root) }
 
-// Clear all the values in the tree.
+// Clear all the values in the sorted map.
 func (r *RedBlack) Clear() { r.root = nil }
 
-// Put a value in the tree at key `k`. The old value at `k` is returned
+// Put a value in the sorted map at key `k`. The old value at `k` is returned
 // if the key was already present.
 func (r *RedBlack) Put(k KType, v VType) (old VType, overwrite bool) {
 	r.root, old, overwrite = put(r.root, k, v)
@@ -55,7 +57,7 @@ func put(h *node, k KType, v VType) (_ *node, old VType, overwrite bool) {
 	return h, old, overwrite
 }
 
-// Get a value from the tree at key `k`. Returns false
+// Get a value from the sorted map at key `k`. Returns false
 // if the key doesn't exist.
 func (r RedBlack) Get(k KType) (VType, bool) {
 	return loopGet(r.root, k)
@@ -75,13 +77,13 @@ func loopGet(x *node, k KType) (VType, bool) {
 	return nil, false
 }
 
-// Has tells if a value exists at key `k`.
+// Has tells if a value exists at key `k`. This is short hand for Get.
 func (r RedBlack) Has(k KType) bool {
 	_, ok := loopGet(r.root, k)
 	return ok
 }
 
-// Min returns the smallest key/value in the tree, if it exists.
+// Min returns the smallest key/value in the sorted map, if it exists.
 func (r RedBlack) Min() (KType, VType, bool) {
 	if r.root == nil {
 		return nil, nil, false
@@ -97,7 +99,7 @@ func min(x *node) *node {
 	return min(x.left)
 }
 
-// Max returns the largest key/value in the tree, if it exists.
+// Max returns the largest key/value in the sorted map, if it exists.
 func (r RedBlack) Max() (KType, VType, bool) {
 	if r.root == nil {
 		return nil, nil, false
@@ -113,7 +115,7 @@ func max(x *node) *node {
 	return max(x.right)
 }
 
-// Floor returns the largest key/value in the tree that is smaller than
+// Floor returns the largest key/value in the sorted map that is smaller than
 // `k`.
 func (r RedBlack) Floor(k KType) (KType, VType, bool) {
 	x := floor(r.root, k)
@@ -141,7 +143,7 @@ func floor(x *node, k KType) *node {
 	return x
 }
 
-// Ceiling returns the smallest key/value in the tree that is larger than
+// Ceiling returns the smallest key/value in the sorted map that is larger than
 // `k`.
 func (r RedBlack) Ceiling(k KType) (KType, VType, bool) {
 	x := ceiling(r.root, k)
@@ -169,7 +171,7 @@ func ceiling(x *node, k KType) *node {
 	return x
 }
 
-// Select key of rank k, meaning the k-th biggest KType in the tree.
+// Select key of rank k, meaning the k-th biggest KType in the sorted map.
 func (r RedBlack) Select(k int) (KType, VType, bool) {
 	x := nodeselect(r.root, k)
 	if x == nil {
@@ -211,7 +213,7 @@ func keyrank(k KType, x *node) int {
 	}
 }
 
-// Keys visit each keys in the tree, in order.
+// Keys visit each keys in the sorted map, in order.
 // It stops when visit returns false.
 func (r RedBlack) Keys(visit func(KType, VType) bool) {
 	min, _, ok := r.Min()
@@ -223,7 +225,7 @@ func (r RedBlack) Keys(visit func(KType, VType) bool) {
 	r.RangedKeys(min, max, visit)
 }
 
-// RangedKeys visit each keys between lo and hi in the tree, in order.
+// RangedKeys visit each keys between lo and hi in the sorted map, in order.
 // It stops when visit returns false.
 func (r RedBlack) RangedKeys(lo, hi KType, visit func(KType, VType) bool) {
 	keys(r.root, visit, lo, hi)
@@ -253,7 +255,7 @@ func keys(x *node, visit func(KType, VType) bool, lo, hi KType) bool {
 	return true
 }
 
-// DeleteMin removes the smallest key and its value from the tree.
+// DeleteMin removes the smallest key and its value from the sorted map.
 func (r *RedBlack) DeleteMin() (oldk KType, oldv VType, ok bool) {
 	r.root, oldk, oldv, ok = deleteMin(r.root)
 	if !r.IsEmpty() {
@@ -277,7 +279,7 @@ func deleteMin(h *node) (_ *node, oldk KType, oldv VType, ok bool) {
 	return balance(h), oldk, oldv, ok
 }
 
-// DeleteMax removes the largest key and its value from the tree.
+// DeleteMax removes the largest key and its value from the sorted map.
 func (r *RedBlack) DeleteMax() (oldk KType, oldv VType, ok bool) {
 	r.root, oldk, oldv, ok = deleteMax(r.root)
 	if !r.IsEmpty() {
@@ -303,7 +305,7 @@ func deleteMax(h *node) (_ *node, oldk KType, oldv VType, ok bool) {
 	return balance(h), oldk, oldv, ok
 }
 
-// Delete key `k` from tree, if it exists.
+// Delete key `k` from sorted map, if it exists.
 func (r *RedBlack) Delete(k KType) (old VType, ok bool) {
 	if r.root == nil {
 		return

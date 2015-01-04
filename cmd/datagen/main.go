@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/codegangsta/cli"
@@ -37,14 +38,21 @@ func sortedMap() cli.Command {
 	return cli.Command{
 		Name:      "sorted-map",
 		ShortName: "smap",
-		Usage:     "create a sorted map customized for your types",
-		Flags:     []cli.Flag{kTypeFlag, vTypeFlag},
+		Usage:     "Create a sorted map customized for your types.",
+		Description: `Create a sorted map customized for your types. The map is built
+on a left leaning red black balanced search tree. The implementation has good
+performance and is well tested, with 100% test coverage. (the tests are not
+generated with the custom type)`,
+		Flags: []cli.Flag{kTypeFlag, vTypeFlag},
 		Action: func(ctx *cli.Context) {
 			ktype := valOrDefault(ctx, kTypeFlag)
 			vtype := valOrDefault(ctx, vTypeFlag)
 			typeName := fmt.Sprintf("Sorted%sTo%sMap", strings.Title(ktype), strings.Title(vtype))
 
-			customKeys := strings.Replace(redblackbst, "KType", ktype, -1)
+			cwd, _ := os.Getwd()
+			pkgname := fmt.Sprintf("package %s", filepath.Base(cwd))
+			customPkg := strings.Replace(redblackbst, "package redblackbst", pkgname, 1)
+			customKeys := strings.Replace(customPkg, "KType", ktype, -1)
 			customVals := strings.Replace(customKeys, "VType", vtype, -1)
 			renamedType := strings.Replace(customVals, "RedBlack", typeName, -1)
 			fmt.Println(renamedType)
