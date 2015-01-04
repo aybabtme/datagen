@@ -33,6 +33,7 @@ func main() {
 	app.Author = "Antoine Grondin"
 	app.Version = "0.1"
 	app.Commands = append(app.Commands, sortedMap())
+	app.Commands = append(app.Commands, sortedSet())
 
 	app.Run(os.Args)
 }

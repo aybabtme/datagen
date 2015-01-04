@@ -6,26 +6,26 @@ import (
 	"io"
 )
 
-// RedBlack is a sorted map built on a left leaning red black balanced
-// search sorted map. It stores VType values, keyed by KType.
+// RedBlack is a sorted set built on a left leaning red black balanced
+// search sorted set. It stores unique KType values.
 type RedBlack struct {
 	root *treenode
 }
 
 func (r RedBlack) compare(a, b KType) int { return a.Compare(b) }
 
-// NewRedBlack creates a sorted map.
+// NewRedBlack creates a sorted set.
 func NewRedBlack() *RedBlack { return &RedBlack{} }
 
-// IsEmpty tells if the sorted map contains no key/value.
+// IsEmpty tells if the sorted set contains no key.
 func (r RedBlack) IsEmpty() bool {
 	return r.root == nil
 }
 
-// Size of the sorted map.
+// Size of the sorted set.
 func (r RedBlack) Size() int { return r.root.size() }
 
-// Clear all the values in the sorted map.
+// Clear all the values in the sorted set.
 func (r *RedBlack) Clear() { r.root = nil }
 
 // Put the key `k` in the sorted set. If the value was already there,
@@ -445,7 +445,7 @@ func (x *treenode) size() int {
 
 // debugging
 
-// DotGraph exports the sorted map into DOT format.
+// DotGraph exports the sorted set into DOT format.
 func (r RedBlack) DotGraph(out io.Writer, name string) (int, error) {
 	return r.dotGraph(r.root, out, name)
 }
