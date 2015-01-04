@@ -5,6 +5,9 @@
 // A red black bst is useful as a map that keeps its items in
 // sorted order, while preserving efficient inserts, lookups and
 // deletions.
+//
+// Some tests were extracted from GoLLRB, a similar implementation by
+// Petar Maymounkov.
 package redblackbst
 
 // ugly type names to avoid collisions, for easy find/replace.
