@@ -8,6 +8,8 @@ package heap
 // 	 Use of this source code is governed by a BSD-style
 // 	 license that can be found in the LICENSE file.
 
+func (h Heap) compare(a, b KType) int { return a.Compare(b) }
+
 // Heap is a container of KType, where the elements can be efficiently
 // retrieved in their decreasing order (according to their comparison
 // rules).
@@ -27,8 +29,6 @@ func NewHeap(keys ...KType) *Heap {
 	return h
 }
 
-func (h Heap) compare(a, b KType) int { return a.Compare(b) }
-
 // Len is the number of elements stored in the heap.
 func (h *Heap) Len() int { return h.n }
 
@@ -42,8 +42,8 @@ func (h *Heap) Peek() KType { return h.pq[1] }
 // again.
 // The complexity is O(n).
 func (h *Heap) Fix() {
-	for i := (len(h.pq) - 1) / 2; i > 0; i-- {
-		h.sink(i, len(h.pq)-1)
+	for i := (h.n) / 2; i > 0; i-- {
+		h.sink(i, h.n)
 	}
 }
 
@@ -58,11 +58,11 @@ func (h *Heap) Push(k KType) {
 // Pop removes the largest element (according to their comparison rules) from
 // the heap and returns it. The complexity is O(log(n)) where n == h.Len().
 func (h *Heap) Pop() KType {
-	h.n--
 	val := h.pq[1]
-	h.swap(1, len(h.pq)-1)
-	h.pq = h.pq[:len(h.pq)-1]
-	h.sink(1, len(h.pq)-1)
+	h.swap(1, h.n)
+	h.pq = h.pq[:h.n]
+	h.n--
+	h.sink(1, h.n)
 
 	return val
 }
@@ -89,7 +89,7 @@ func (h *Heap) Remove(k KType) bool {
 			continue
 		}
 		h.swap(i, 1)
-		h.sink(i, len(h.pq)-1)
+		h.sink(i, h.n)
 		_ = h.Pop()
 		return true
 	}

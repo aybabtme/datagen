@@ -312,7 +312,7 @@ func toGraph(tree *RedBlack) graph {
 
 	lo, _, _ := tree.Min()
 	hi, _, _ := tree.Max()
-	nodes(tree.root, func(n *treenode) bool {
+	nodes(tree.root, func(n *mapnode) bool {
 
 		h := nd{
 			name: string(n.key.(K)),

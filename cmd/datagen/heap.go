@@ -66,9 +66,9 @@ func replaceHeapCompareFunc(ktype string, src []byte) []byte {
 
 	case "float32", "float64":
 		tmpl = `
-const e = 0.00000001
-
 func (h Heap) compare(a, b KType) int {
+	const e = 0.00000001
+
     diff := (a-b)/a
     if diff < -e {
         return -1
@@ -92,11 +92,11 @@ func (h Heap) compare(a, b KType) int {
 
 	case "[]byte":
 		log.Printf("WARNING: using []byte as keys can lead to undefined behavior if the []byte are modified after insertion!!!")
-		tmpl = `
+		tmpl = `import "bytes"
+
 // WARNING: using []byte as keys can lead to undefined behavior if the
 // []byte are modified after insertion!!!
-func  (h Heap) compare(a, b KType) int { return bytes.Compare(a, b) }
-`
+func (h Heap) compare(a, b KType) int { return bytes.Compare(a, b) }`
 
 	default:
 
@@ -108,6 +108,10 @@ func  (h Heap) compare(a, b KType) int { return bytes.Compare(a, b) }
 				ktype,
 			)
 		} else {
+			l := 0
+			if []rune(ktype)[0] == '*' {
+				l = 1
+			}
 			// otherwise don't change anything by default, let the user
 			// provide a `Compare` func
 			log.Printf("type %q will need to implement a Compare func: %s",
@@ -120,7 +124,7 @@ func  (h Heap) compare(a, b KType) int { return bytes.Compare(a, b) }
 			return -1
 		}
 		return 0
-	}`, strings.ToLower(ktype[:1]), ktype, ktype))
+	}`, strings.ToLower(ktype[l:l+1]), ktype, ktype))
 			return src
 		}
 
