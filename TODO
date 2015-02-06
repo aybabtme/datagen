@@ -4,6 +4,9 @@ Code gen:
 * Generate benchmarks for generated code.
 * Format and check the generated code compiles before writing the output.
 
+Performance:
+* performance is okay, but I haven't optimized anything.
+
 Datastructures:
 * Benchmark all the methods of the datastructures.
 * Implement more things like:
