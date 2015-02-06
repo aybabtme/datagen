@@ -10,7 +10,6 @@ Datastructures:
    * Concurrent safe structures.
    * List.
    * Queue.
-   * Heap.
-   * Hash.
+   * Caches (LRU, etc).
    * Graph.
    * Probabilistic structures.
