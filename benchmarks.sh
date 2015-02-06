@@ -25,11 +25,13 @@ if [[ -z $OWN_VERSION ]]; then
    OWN_VERSION=`git rev-parse --verify --short HEAD`
 fi
 
-OTHER_FILENAME="_bench/other_heap-"$GO_VERSION"_llrb-"$LLRB_VERSION".bench"
-OWN_FILENAME="_bench/own_$OWN_VERSION.bench"
+OTHER_FILENAME="bench/raw/other_heap-"$GO_VERSION"_llrb-"$LLRB_VERSION".bench"
+OWN_FILENAME="bench/raw/own_$OWN_VERSION.bench"
 
 
-go test ./benchmarks/_bench/. -test.bench . -benchmem -tags other > $OTHER_FILENAME
-go test ./benchmarks/_bench/. -test.bench . -benchmem -tags own > $OWN_FILENAME
+echo "Benchmarking container/heap ($GO_VERSION) and GoLLRB ($LLRB_VERSION)"
+go test ./bench/_bench/. -test.bench . -benchmem -tags other > $OTHER_FILENAME
+echo "Benchmarking datagen heap and balanced trees ($OWN_VERSION)"
+go test ./bench/_bench/. -test.bench . -benchmem -tags own > $OWN_FILENAME
 
 benchcmp $OTHER_FILENAME $OWN_FILENAME > "bench/$OWN_VERSION_vs_heap"$GO_VERSION"_llrb-"$LLRB_VERSION"

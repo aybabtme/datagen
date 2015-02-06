@@ -3,7 +3,7 @@
 set -e
 
 echo "!! Testing datastructure implementations"
-go test ./...
+go test -cover ./...
 
 echo "!! Updating datagen templates"
 pushd cmd/datagen/ && go generate
