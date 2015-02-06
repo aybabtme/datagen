@@ -6,8 +6,8 @@ echo "!! Testing datastructure implementations"
 go test ./...
 
 echo "!! Updating datagen templates"
-cd cmd/datagen/ && go generate
-cd -
+pushd cmd/datagen/ && go generate
+popd
 
 echo "!! Verifying code generated for sorted map"
 for i in "int" "float64" "string" "[]byte" "[]string"; do
@@ -40,7 +40,7 @@ for i in "int" "float64" "string" "[]byte" "[]string"; do
     rm gen_heap.go
 done
 
-cd codegen
+pushd codegen
 echo "!! Generating benchmarked sorted maps"
 go run ../cmd/datagen/*.go smap -key string  -val string > smap_string_string.go
 go run ../cmd/datagen/*.go smap -key []byte  -val string > smap_bytes_string.go 2> /dev/null
@@ -60,7 +60,8 @@ go run ../cmd/datagen/*.go heap -key int     > heap_int.go
 go run ../cmd/datagen/*.go heap -key float64 > heap_float.go
 
 echo "!! Check benchmarked types build together"
-go build .
-cd -
+go build . && go clean
+popd
+
 
 echo "!! All good!"
