@@ -1,3 +1,5 @@
+package heap
+
 // Most of the implementation is adapted from Algorithms 4ed by Sedgewick
 // and Wayne.
 
@@ -6,10 +8,9 @@
 // 	 Use of this source code is governed by a BSD-style
 // 	 license that can be found in the LICENSE file.
 
-package heap
-
 // Heap is a container of KType, where the elements can be efficiently
-// retrieve in their decreasing order (according to Compare).
+// retrieved in their decreasing order (according to their comparison
+// rules).
 type Heap struct {
 	n  int
 	pq []KType
@@ -26,10 +27,12 @@ func NewHeap(keys ...KType) *Heap {
 	return h
 }
 
+func (h Heap) compare(a, b KType) int { return a.Compare(b) }
+
 // Len is the number of elements stored in the heap.
 func (h *Heap) Len() int { return h.n }
 
-// Peek at the largest element (according to Compare), without
+// Peek at the largest element (according to their comparison rules), without
 // removing it from the heap.
 func (h *Heap) Peek() KType { return h.pq[1] }
 
@@ -52,8 +55,8 @@ func (h *Heap) Push(k KType) {
 	h.swim(h.n)
 }
 
-// Pop removes the largest element (according to Compare) from the heap
-// and returns it. The complexity is O(log(n)) where n == h.Len().
+// Pop removes the largest element (according to their comparison rules) from
+// the heap and returns it. The complexity is O(log(n)) where n == h.Len().
 func (h *Heap) Pop() KType {
 	h.n--
 	val := h.pq[1]
@@ -69,7 +72,7 @@ func (h *Heap) Pop() KType {
 // The complexity is O(n+log(n)) where n == h.Len().
 func (h *Heap) Remove(k KType) bool {
 
-	cmp := h.pq[1].Compare(k)
+	cmp := h.compare(h.pq[1], k)
 	if cmp == 0 {
 		_ = h.Pop()
 		return true
@@ -82,7 +85,7 @@ func (h *Heap) Remove(k KType) bool {
 	i := 0
 	for _, j := range h.pq[1:] {
 		i++
-		if j.Compare(k) != 0 {
+		if h.compare(j, k) != 0 {
 			continue
 		}
 		h.swap(i, 1)
@@ -95,7 +98,7 @@ func (h *Heap) Remove(k KType) bool {
 }
 
 func (h *Heap) swap(i, j int)      { h.pq[i], h.pq[j] = h.pq[j], h.pq[i] }
-func (h *Heap) less(i, j int) bool { return h.pq[i].Compare(h.pq[j]) < 0 }
+func (h *Heap) less(i, j int) bool { return h.compare(h.pq[i], h.pq[j]) < 0 }
 
 func (h *Heap) swim(k int) {
 	for k > 1 && h.less(k/2, k) {

@@ -34,6 +34,7 @@ func main() {
 	app.Version = "0.1"
 	app.Commands = append(app.Commands, sortedMap())
 	app.Commands = append(app.Commands, sortedSet())
+	app.Commands = append(app.Commands, heap())
 
 	if err := app.Run(os.Args); err != nil {
 		log.Fatal(err)

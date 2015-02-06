@@ -11,7 +11,7 @@ import (
 
 func sortedSet() cli.Command {
 
-	kTypeFlag := cli.StringFlag{
+	keyTypeFlag := cli.StringFlag{
 		Name:  "key",
 		Usage: "type that will be held in the set",
 	}
@@ -24,9 +24,9 @@ func sortedSet() cli.Command {
 on a left leaning red black balanced search tree. The implementation has good
 performance and is well tested, with 100% test coverage. (the tests are not
 generated with the custom type)`,
-		Flags: []cli.Flag{kTypeFlag},
+		Flags: []cli.Flag{keyTypeFlag},
 		Action: func(ctx *cli.Context) {
-			ktype := valOrDefault(ctx, kTypeFlag)
+			ktype := valOrDefault(ctx, keyTypeFlag)
 
 			kname := ktype
 			if len(kname) > 1 && []byte(kname)[0] == '*' {
@@ -42,11 +42,11 @@ generated with the custom type)`,
 			cwd, _ := os.Getwd()
 			pkgname := fmt.Sprintf("package %s", filepath.Base(cwd))
 
-			src := []byte(redblackbstSet)
+			src := []byte(redblackbstSetSrc)
 			src = bytes.Replace(src, []byte("package redblackbst"), []byte(pkgname), 1)
 
 			// need to replace Compare before replacing KType
-			src = replaceCompareFunc(ktype, src)
+			src = replaceRbstCompareFunc(ktype, src)
 			src = bytes.Replace(src, []byte("KType"), []byte(ktype), -1)
 			src = bytes.Replace(src, []byte("RedBlack"), []byte(typeName), -1)
 			src = bytes.Replace(src, []byte("treenode"), []byte(nodeName), -1)
