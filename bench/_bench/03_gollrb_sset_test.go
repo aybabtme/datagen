@@ -4,9 +4,10 @@ package bench
 
 import (
 	"bytes"
-	"github.com/petar/GoLLRB/llrb"
 	"strconv"
 	"testing"
+
+	"github.com/petar/GoLLRB/llrb"
 )
 
 // GoLLRB

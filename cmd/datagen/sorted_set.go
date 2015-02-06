@@ -3,10 +3,11 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"github.com/codegangsta/cli"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/codegangsta/cli"
 )
 
 func sortedSet() cli.Command {

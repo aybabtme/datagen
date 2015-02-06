@@ -121,4 +121,3 @@ func (h *IntHeap) sink(k, n int) {
 		k = j
 	}
 }
-

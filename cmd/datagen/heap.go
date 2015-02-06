@@ -3,11 +3,12 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"github.com/codegangsta/cli"
 	"log"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/codegangsta/cli"
 )
 
 func heap() cli.Command {

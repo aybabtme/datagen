@@ -3,8 +3,9 @@
 package bench
 
 import (
-	. "github.com/aybabtme/datagen/codegen"
 	"testing"
+
+	. "github.com/aybabtme/datagen/codegen"
 )
 
 func Benchmark_Heap_StringHeap(b *testing.B) {

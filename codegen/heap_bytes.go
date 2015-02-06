@@ -125,4 +125,3 @@ func (h *BytesHeap) sink(k, n int) {
 		k = j
 	}
 }
-

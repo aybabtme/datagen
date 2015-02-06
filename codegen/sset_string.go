@@ -1,14 +1,13 @@
 package codegen
 
-
 func (r SortedStringSet) compare(a, b string) int {
-    if a < b {
-        return -1
-    }
-    if a > b {
-        return 1
-    }
-    return 0
+	if a < b {
+		return -1
+	}
+	if a > b {
+		return 1
+	}
+	return 0
 }
 
 // SortedStringSet is a sorted set built on a left leaning red black balanced
@@ -445,4 +444,3 @@ func (x *nodeString) size() int {
 	}
 	return x.n
 }
-

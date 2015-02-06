@@ -4,13 +4,14 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
-	"github.com/pkg/browser"
 	"io"
 	"log"
 	"os"
 	"os/exec"
 	"sort"
 	"testing"
+
+	"github.com/pkg/browser"
 )
 
 type K string
