@@ -19,6 +19,12 @@ Alike to `go generate` and other code gen tools, this tool
 is meant for package authors who wish to generate code.
 It should not be used as a build step for your users.
 
+## Supports
+
+* Heap/Priority queues.
+* Sorted maps.
+* Sorted sets.
+
 ## Why
 
 ### Usability
