@@ -1,15 +1,16 @@
 package codegen
 
+
 func (r SortedFloat64Set) compare(a, b float64) int {
 	const e = 0.00000001
 
-	diff := (a - b) / a
-	if diff < -e {
-		return -1
-	} else if diff > e {
-		return 1
-	}
-	return 0
+    diff := (a-b)/a
+    if diff < -e {
+        return -1
+    } else if diff > e {
+        return 1
+    }
+    return 0
 }
 
 // SortedFloat64Set is a sorted set built on a left leaning red black balanced
@@ -446,3 +447,4 @@ func (x *nodeFloat64) size() int {
 	}
 	return x.n
 }
+

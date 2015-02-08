@@ -1,15 +1,16 @@
 package codegen
 
+
 func (r SortedFloat64ToStringMap) compare(a, b float64) int {
 	const e = 0.00000001
 
-	diff := (a - b) / a
-	if diff < -e {
-		return -1
-	} else if diff > e {
-		return 1
-	}
-	return 0
+    diff := (a-b)/a
+    if diff < -e {
+        return -1
+    } else if diff > e {
+        return 1
+    }
+    return 0
 }
 
 // SortedFloat64ToStringMap is a sorted map built on a left leaning red black balanced
@@ -458,3 +459,4 @@ func (x *nodeFloat64ToString) size() int {
 	}
 	return x.n
 }
+

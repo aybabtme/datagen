@@ -8,14 +8,15 @@ package codegen
 // 	 Use of this source code is governed by a BSD-style
 // 	 license that can be found in the LICENSE file.
 
+
 func (h StringHeap) compare(a, b string) int {
-	if a < b {
-		return -1
-	}
-	if a > b {
-		return 1
-	}
-	return 0
+    if a < b {
+        return -1
+    }
+    if a > b {
+        return 1
+    }
+    return 0
 }
 
 // StringHeap is a container of string, where the elements can be efficiently
@@ -129,3 +130,4 @@ func (h *StringHeap) sink(k, n int) {
 		k = j
 	}
 }
+

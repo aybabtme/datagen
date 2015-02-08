@@ -24,6 +24,7 @@ It should not be used as a build step for your users.
 * Heap/Priority queues.
 * Sorted maps.
 * Sorted sets.
+* Queues.
 
 ## Why
 
@@ -196,6 +197,9 @@ The red black tree and heap implementations are heavily inspired from the Java
 implementations of Robert Sedgewick.
 
 The heap implementation was inspired, and the comments/tests adapted from `container/heap`.
+
+The queue implementation was adapted from `github.com/eapache/queue`, a package by
+Evan Huus.
 
 Some tests for the red black tree were extracted from GoLLRB, a similar
 implementation by Petar Maymounkov.

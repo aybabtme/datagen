@@ -1,34 +1,34 @@
-package queue
+package codegen
 
 // Implementation adapted from github.com/eapache/queue:
 //    The MIT License (MIT)
 //    Copyright (c) 2014 Evan Huus
 
-var nilKType KType
+var nilint int
 
-// Queue represents a single instance of the queue data structure.
-type Queue struct {
-	buf               []KType
+// IntQueue represents a single instance of the queue data structure.
+type IntQueue struct {
+	buf               []int
 	head, tail, count int
 	minlen            int
 }
 
-// NewQueue constructs and returns a new Queue with an initial capacity.
-func NewQueue(capacity int) *Queue {
+// NewIntQueue constructs and returns a new IntQueue with an initial capacity.
+func NewIntQueue(capacity int) *IntQueue {
 	// min capacity of 16
 	if capacity < 16 {
 		capacity = 16
 	}
-	return &Queue{buf: make([]KType, capacity), minlen: capacity}
+	return &IntQueue{buf: make([]int, capacity), minlen: capacity}
 }
 
 // Len returns the number of elements currently stored in the queue.
-func (q *Queue) Len() int {
+func (q *IntQueue) Len() int {
 	return q.count
 }
 
 // Push puts an element on the end of the queue.
-func (q *Queue) Push(elem KType) {
+func (q *IntQueue) Push(elem int) {
 	if q.count == len(q.buf) {
 		q.resize()
 	}
@@ -40,7 +40,7 @@ func (q *Queue) Push(elem KType) {
 
 // Peek returns the element at the head of the queue. This call panics
 // if the queue is empty.
-func (q *Queue) Peek() KType {
+func (q *IntQueue) Peek() int {
 	if q.Len() <= 0 {
 		panic("queue: empty queue")
 	}
@@ -49,7 +49,7 @@ func (q *Queue) Peek() KType {
 
 // Get returns the element at index i in the queue. If the index is
 // invalid, the call will panic.
-func (q *Queue) Get(i int) KType {
+func (q *IntQueue) Get(i int) int {
 	if i >= q.Len() || i < 0 {
 		panic("queue: index out of range")
 	}
@@ -59,14 +59,14 @@ func (q *Queue) Get(i int) KType {
 
 // Pop removes the element from the front of the queue.
 // This call panics if the queue is empty.
-func (q *Queue) Pop() KType {
+func (q *IntQueue) Pop() int {
 	if q.Len() <= 0 {
 		panic("queue: empty queue")
 	}
 	v := q.buf[q.head]
 	// set to nil to avoid keeping reference to objects
 	// that would otherwise be garbage collected
-	q.buf[q.head] = nilKType
+	q.buf[q.head] = nilint
 	q.head = (q.head + 1) % len(q.buf)
 	q.count--
 	if len(q.buf) > q.minlen && q.count*4 <= len(q.buf) {
@@ -75,8 +75,8 @@ func (q *Queue) Pop() KType {
 	return v
 }
 
-func (q *Queue) resize() {
-	newBuf := make([]KType, q.count*2)
+func (q *IntQueue) resize() {
+	newBuf := make([]int, q.count*2)
 
 	if q.tail > q.head {
 		copy(newBuf, q.buf[q.head:q.tail])
@@ -89,3 +89,4 @@ func (q *Queue) resize() {
 	q.tail = q.count
 	q.buf = newBuf
 }
+

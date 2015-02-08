@@ -40,6 +40,16 @@ for i in "int" "float64" "string" "[]byte" "[]string"; do
     rm gen_heap.go
 done
 
+echo "!! Verifying code generated for queue"
+for i in "int" "float64" "string" "[]byte" "[]string"; do
+    echo " -key=$i"
+    go run cmd/datagen/*.go queue -key=$i > gen_queue.go 2>/dev/null
+    go build gen_queue.go || rm gen_queue.go
+    go vet gen_queue.go || rm gen_queue.go
+    golint gen_queue.go || rm gen_queue.go
+    rm gen_queue.go
+done
+
 pushd codegen
 echo "!! Generating benchmarked sorted maps"
 go run ../cmd/datagen/*.go smap -key string  -val string > smap_string_string.go
@@ -58,6 +68,13 @@ go run ../cmd/datagen/*.go heap -key string  > heap_string.go
 go run ../cmd/datagen/*.go heap -key []byte  > heap_bytes.go 2> /dev/null
 go run ../cmd/datagen/*.go heap -key int     > heap_int.go
 go run ../cmd/datagen/*.go heap -key float64 > heap_float.go
+
+echo "!! Generating benchmarked queues"
+go run ../cmd/datagen/*.go queue -key string  > queue_string.go
+go run ../cmd/datagen/*.go queue -key []byte  > queue_bytes.go
+go run ../cmd/datagen/*.go queue -key int     > queue_int.go
+go run ../cmd/datagen/*.go queue -key float64 > queue_float.go
+
 
 echo "!! Check benchmarked types build together"
 go build . && go clean

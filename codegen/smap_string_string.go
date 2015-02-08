@@ -1,13 +1,14 @@
 package codegen
 
+
 func (r SortedStringToStringMap) compare(a, b string) int {
-	if a < b {
-		return -1
-	}
-	if a > b {
-		return 1
-	}
-	return 0
+    if a < b {
+        return -1
+    }
+    if a > b {
+        return 1
+    }
+    return 0
 }
 
 // SortedStringToStringMap is a sorted map built on a left leaning red black balanced
@@ -456,3 +457,4 @@ func (x *nodeStringToString) size() int {
 	}
 	return x.n
 }
+

@@ -41,9 +41,10 @@ is based on a ring buffer, which has good performance and is well tested.
 			cwd, _ := os.Getwd()
 			pkgname := fmt.Sprintf("package %s", filepath.Base(cwd))
 
-			src := []byte(heapSrc)
+			src := []byte(queueSrc)
 			src = bytes.Replace(src, []byte("package queue"), []byte(pkgname), 1)
 
+			src = bytes.Replace(src, []byte("nilKType"), []byte("nil"+kname), -1) // before KType's replace
 			src = bytes.Replace(src, []byte("KType"), []byte(ktype), -1)
 			src = bytes.Replace(src, []byte("Queue"), []byte(typeName), -1)
 

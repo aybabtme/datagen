@@ -8,16 +8,17 @@ package codegen
 // 	 Use of this source code is governed by a BSD-style
 // 	 license that can be found in the LICENSE file.
 
+
 func (h Float64Heap) compare(a, b float64) int {
 	const e = 0.00000001
 
-	diff := (a - b) / a
-	if diff < -e {
-		return -1
-	} else if diff > e {
-		return 1
-	}
-	return 0
+    diff := (a-b)/a
+    if diff < -e {
+        return -1
+    } else if diff > e {
+        return 1
+    }
+    return 0
 }
 
 // Float64Heap is a container of float64, where the elements can be efficiently
@@ -131,3 +132,4 @@ func (h *Float64Heap) sink(k, n int) {
 		k = j
 	}
 }
+
