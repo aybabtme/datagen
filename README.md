@@ -106,7 +106,9 @@ func main() {
 In most case, a code generated datastructure will perform better than one that
 uses interfaces.
 
-SortedMap           | Operations  | GoLLRB ns/op | datagen ns/op | delta (smaller is better)
+
+#### SortedMap
+                    | Operations  | GoLLRB ns/op | datagen ns/op | delta (smaller is better)
 --------------------|-------------|--------------|---------------|---------------------------
 `[]byte`:`string`   | Delete      | 3119         |  1487         | -52.32%
 `float64`: `string` | Delete      | 2684         |  1797         | -33.05%
@@ -121,8 +123,9 @@ SortedMap           | Operations  | GoLLRB ns/op | datagen ns/op | delta (smalle
 `int`:`string`      | Insert      | 2736         |  1039         | -62.02%
 `string` `string`   | Insert      | 3256         |  1121         | -65.57%
 
+#### SortedSet
 
- SortedSet | Operations   | GoLLRB ns/op | datagen ns/op | delta (smaller is better)
+           | Operations   | GoLLRB ns/op | datagen ns/op | delta (smaller is better)
 -----------|--------------|--------------|---------------|---------------------------
  `[]byte`  | Delete       | 2934         |  1620         | -44.79%
  `float64` | Delete       | 2712         |  1599         | -41.04%
@@ -137,8 +140,9 @@ SortedMap           | Operations  | GoLLRB ns/op | datagen ns/op | delta (smalle
  `int`     | Insert       | 2720         |  869          | -68.05%
  `string`  | Insert       | 3152         |  1040         | -67.01%
 
+#### Heap
 
-Heap         | Operations | stdlib ns/op   |  datagen ns/op   | delta  (smaller is better)
+             | Operations | stdlib ns/op   |  datagen ns/op   | delta  (smaller is better)
 -------------|------------|----------------|------------------|---------------------------
 `[]byte`     | Pop        | 1383           |  1323            | -4.34%
 `float64`    | Pop        | 499            |  548             | +9.82%
@@ -153,8 +157,8 @@ Heap         | Operations | stdlib ns/op   |  datagen ns/op   | delta  (smaller 
 `int`        | various    | 3686002        |  3685407         | -0.02%
 `string`     | various    | 7612799        |  7007515         | -7.95%
 
-
-Queue        | Operations | stdlib ns/op   |  datagen ns/op   | delta  (smaller is better)
+#### Queue
+             | Operations | stdlib ns/op   |  datagen ns/op   | delta  (smaller is better)
 -------------|------------|----------------|------------------|---------------------------
 `[]byte`     | Pop        | 72.1           | 60.3             | -16.37%
 `float64`    | Pop        | 60.1           | 19.5             | -67.55%
