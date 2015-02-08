@@ -55,6 +55,8 @@ func (q *Queue) Get(i int) KType {
 	return q.buf[modi]
 }
 
+var nilKType KType
+
 // Pop removes the element from the front of the queue.
 // This call panics if the queue is empty.
 func (q *Queue) Pop() KType {
@@ -62,7 +64,9 @@ func (q *Queue) Pop() KType {
 		panic("queue: empty queue")
 	}
 	v := q.buf[q.head]
-	q.buf[q.head] = nil
+	// set to nil to avoid keeping reference to objects
+	// that would otherwise be garbage collected
+	q.buf[q.head] = nilKType
 	q.head = (q.head + 1) % len(q.buf)
 	q.count--
 	if len(q.buf) > q.minlen && q.count*4 <= len(q.buf) {

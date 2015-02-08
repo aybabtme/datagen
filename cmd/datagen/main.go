@@ -35,6 +35,7 @@ func main() {
 	app.Commands = append(app.Commands, sortedMap())
 	app.Commands = append(app.Commands, sortedSet())
 	app.Commands = append(app.Commands, heap())
+	app.Commands = append(app.Commands, queue())
 
 	if err := app.Run(os.Args); err != nil {
 		log.Fatal(err)
