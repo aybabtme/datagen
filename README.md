@@ -154,6 +154,26 @@ Heap         | Operations | stdlib ns/op   |  datagen ns/op   | delta  (smaller 
 `string`     | various    | 7612799        |  7007515         | -7.95%
 
 
+Queue        | Operations | stdlib ns/op   |  datagen ns/op   | delta  (smaller is better)
+-------------|------------|----------------|------------------|---------------------------
+`[]byte`     | Pop        | 72.1           | 60.3             | -16.37%
+`float64`    | Pop        | 60.1           | 19.5             | -67.55%
+`int`        | Pop        | 79.2           | 20.7             | -73.86%
+`string`     | Pop        | 79.6           | 51.3             | -35.55%
+`[]byte`     | Push       | 326            | 175              | -46.32%
+`float64`    | Push       | 141            | 18.9             | -86.60%
+`int`        | Push       | 218            | 21.7             | -90.05%
+`string`     | Push       | 201            | 56.8             | -71.74%
+`[]byte`     | Serial     | 395            | 229              | -42.03%
+`float64`    | Serial     | 197            | 37.5             | -80.96%
+`int`        | Serial     | 268            | 37.0             | -86.19%
+`string`     | Serial     | 215            | 165              | -23.26%
+`[]byte`     | TickTock   | 217            | 38.9             | -82.07%
+`float64`    | TickTock   | 128            | 32.3             | -74.77%
+`int`        | TickTock   | 152            | 32.1             | -78.88%
+`string`     | TickTock   | 165            | 36.4             | -77.94%
+
+
 ## Subpackages
 
 The following packages can be imported and used without code gen. However,
@@ -168,6 +188,7 @@ Robert Sedgewick and Kevin Wayne. A red black bst is useful as
 no data about values.
 * `heap` is a heap implementation inspired from Algorithms 4th edition and
 the `container/heap` implementation.
+* `queue` is a queue implementation adapted from github.com/eapachae/queue.
 
 ## Contributions
 

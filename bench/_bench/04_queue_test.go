@@ -152,7 +152,7 @@ func Benchmark_Queue_Float64_Pop(b *testing.B) {
 // Bytes
 
 func Benchmark_Queue_Bytes_Serial(b *testing.B) {
-	vals := makeBytess(b.N)
+	vals := makeBytes(b.N)
 	q := NewBytesQueue(0)
 	b.ResetTimer()
 	for _, v := range vals {
@@ -164,7 +164,7 @@ func Benchmark_Queue_Bytes_Serial(b *testing.B) {
 }
 
 func Benchmark_Queue_Bytes_TickTock(b *testing.B) {
-	vals := makeBytess(b.N)
+	vals := makeBytes(b.N)
 	q := NewBytesQueue(0)
 
 	b.ResetTimer()
@@ -175,7 +175,7 @@ func Benchmark_Queue_Bytes_TickTock(b *testing.B) {
 }
 
 func Benchmark_Queue_Bytes_Push(b *testing.B) {
-	vals := makeBytess(b.N)
+	vals := makeBytes(b.N)
 	q := NewBytesQueue(0)
 
 	b.ResetTimer()
@@ -185,7 +185,7 @@ func Benchmark_Queue_Bytes_Push(b *testing.B) {
 }
 
 func Benchmark_Queue_Bytes_Pop(b *testing.B) {
-	vals := makeBytess(b.N)
+	vals := makeBytes(b.N)
 	q := NewBytesQueue(0)
 	for _, v := range vals {
 		q.Push(v)
