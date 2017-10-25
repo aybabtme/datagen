@@ -25,11 +25,16 @@ func (r *SortedIntToStringMap) Clear() { r.root = nil }
 // Put a value in the sorted map at key `k`. The old value at `k` is returned
 // if the key was already present.
 func (r *SortedIntToStringMap) Put(k int, v string) (old string, overwrite bool) {
-	r.root, old, overwrite = r.put(r.root, k, v)
+	r.root, old, overwrite = r.put(r.root, k, v, func(_ string) string { return v })
 	return
 }
 
-func (r *SortedIntToStringMap) put(h *nodeIntToString, k int, v string) (_ *nodeIntToString, old string, overwrite bool) {
+// Mutate is like a Put when `k` isn't defined, but allows you to create or mutate the value found at the location of `k`.
+func (r *SortedIntToStringMap) Mutate(k int, v string, mutator func(old string) string) {
+	r.root, _, _ = r.put(r.root, k, v, mutator)
+}
+
+func (r *SortedIntToStringMap) put(h *nodeIntToString, k int, v string, mutate func(old string) string) (_ *nodeIntToString, old string, overwrite bool) {
 	if h == nil {
 		n := &nodeIntToString{key: k, val: v, n: 1, colorRed: true}
 		return n, old, overwrite
@@ -37,13 +42,13 @@ func (r *SortedIntToStringMap) put(h *nodeIntToString, k int, v string) (_ *node
 
 	cmp := r.compare(k, h.key)
 	if cmp < 0 {
-		h.left, old, overwrite = r.put(h.left, k, v)
+		h.left, old, overwrite = r.put(h.left, k, v, mutate)
 	} else if cmp > 0 {
-		h.right, old, overwrite = r.put(h.right, k, v)
+		h.right, old, overwrite = r.put(h.right, k, v, mutate)
 	} else {
 		overwrite = true
 		old = h.val
-		h.val = v
+		h.val = mutate(old)
 	}
 
 	if h.right.isRed() && !h.left.isRed() {
