@@ -25,26 +25,26 @@ func (r *RedBlack) Clear() { r.root = nil }
 // Put a value in the sorted map at key `k`. The old value at `k` is returned
 // if the key was already present.
 func (r *RedBlack) Put(k KType, v VType) (old VType, overwrite bool) {
-	r.root, old, overwrite = r.put(r.root, k, v, func(_ VType) VType { return v })
+	r.root, old, overwrite = r.put(r.root, k, func() VType { return v }, func(_ VType) VType { return v })
 	return
 }
 
 // Mutate is like a Put when `k` isn't defined, but allows you to create or mutate the value found at the location of `k`.
-func (r *RedBlack) Mutate(k KType, v VType, mutator func(old VType) VType) {
-	r.root, _, _ = r.put(r.root, k, v, mutator)
+func (r *RedBlack) Mutate(k KType, creator func() VType, mutator func(old VType) VType) {
+	r.root, _, _ = r.put(r.root, k, creator, mutator)
 }
 
-func (r *RedBlack) put(h *mapnode, k KType, v VType, mutate func(old VType) VType) (_ *mapnode, old VType, overwrite bool) {
+func (r *RedBlack) put(h *mapnode, k KType, create func() VType, mutate func(old VType) VType) (_ *mapnode, old VType, overwrite bool) {
 	if h == nil {
-		n := &mapnode{key: k, val: v, n: 1, colorRed: true}
+		n := &mapnode{key: k, val: create(), n: 1, colorRed: true}
 		return n, old, overwrite
 	}
 
 	cmp := r.compare(k, h.key)
 	if cmp < 0 {
-		h.left, old, overwrite = r.put(h.left, k, v, mutate)
+		h.left, old, overwrite = r.put(h.left, k, create, mutate)
 	} else if cmp > 0 {
-		h.right, old, overwrite = r.put(h.right, k, v, mutate)
+		h.right, old, overwrite = r.put(h.right, k, create, mutate)
 	} else {
 		overwrite = true
 		old = h.val

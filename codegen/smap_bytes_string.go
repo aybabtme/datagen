@@ -29,26 +29,26 @@ func (r *SortedBytesToStringMap) Clear() { r.root = nil }
 // Put a value in the sorted map at key `k`. The old value at `k` is returned
 // if the key was already present.
 func (r *SortedBytesToStringMap) Put(k []byte, v string) (old string, overwrite bool) {
-	r.root, old, overwrite = r.put(r.root, k, v, func(_ string) string { return v })
+	r.root, old, overwrite = r.put(r.root, k, func() string { return v }, func(_ string) string { return v })
 	return
 }
 
 // Mutate is like a Put when `k` isn't defined, but allows you to create or mutate the value found at the location of `k`.
-func (r *SortedBytesToStringMap) Mutate(k []byte, v string, mutator func(old string) string) {
-	r.root, _, _ = r.put(r.root, k, v, mutator)
+func (r *SortedBytesToStringMap) Mutate(k []byte, creator func() string, mutator func(old string) string) {
+	r.root, _, _ = r.put(r.root, k, creator, mutator)
 }
 
-func (r *SortedBytesToStringMap) put(h *nodeBytesToString, k []byte, v string, mutate func(old string) string) (_ *nodeBytesToString, old string, overwrite bool) {
+func (r *SortedBytesToStringMap) put(h *nodeBytesToString, k []byte, create func() string, mutate func(old string) string) (_ *nodeBytesToString, old string, overwrite bool) {
 	if h == nil {
-		n := &nodeBytesToString{key: k, val: v, n: 1, colorRed: true}
+		n := &nodeBytesToString{key: k, val: create(), n: 1, colorRed: true}
 		return n, old, overwrite
 	}
 
 	cmp := r.compare(k, h.key)
 	if cmp < 0 {
-		h.left, old, overwrite = r.put(h.left, k, v, mutate)
+		h.left, old, overwrite = r.put(h.left, k, create, mutate)
 	} else if cmp > 0 {
-		h.right, old, overwrite = r.put(h.right, k, v, mutate)
+		h.right, old, overwrite = r.put(h.right, k, create, mutate)
 	} else {
 		overwrite = true
 		old = h.val
