@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/codegangsta/cli"
+	"gopkg.in/urfave/cli.v1"
 )
 
 func queue() cli.Command {
@@ -43,6 +43,8 @@ is based on a ring buffer, which has good performance and is well tested.
 
 			src := []byte(queueSrc)
 			src = bytes.Replace(src, []byte("package queue"), []byte(pkgname), 1)
+
+			src = bytes.Replace(src, []byte("// GENERATED CODE!!!"), []byte(generatedCodeComment()), 1)
 
 			src = bytes.Replace(src, []byte("nilKType"), []byte("nil"+kname), -1) // before KType's replace
 			src = bytes.Replace(src, []byte("KType"), []byte(ktype), -1)

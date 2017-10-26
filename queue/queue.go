@@ -1,5 +1,7 @@
 package queue
 
+// GENERATED CODE!!!
+
 // Implementation adapted from github.com/eapache/queue:
 //    The MIT License (MIT)
 //    Copyright (c) 2014 Evan Huus

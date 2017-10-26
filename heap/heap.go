@@ -1,5 +1,7 @@
 package heap
 
+// GENERATED CODE!!!
+
 // Most of the implementation is adapted from Algorithms 4ed by Sedgewick
 // and Wayne.
 

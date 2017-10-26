@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/codegangsta/cli"
+	"gopkg.in/urfave/cli.v1"
 )
 
 func heap() cli.Command {
@@ -44,6 +44,8 @@ has good performance and is well tested, with 100% test coverage.
 
 			src := []byte(heapSrc)
 			src = bytes.Replace(src, []byte("package heap"), []byte(pkgname), 1)
+
+			src = bytes.Replace(src, []byte("// GENERATED CODE!!!"), []byte(generatedCodeComment()), 1)
 
 			// need to replace Compare before replacing KType
 			src = replaceHeapCompareFunc(ktype, src)

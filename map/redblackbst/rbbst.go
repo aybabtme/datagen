@@ -1,5 +1,7 @@
 package redblackbst
 
+// GENERATED CODE!!!
+
 func (r RedBlack) compare(a, b KType) int { return a.Compare(b) }
 
 // RedBlack is a sorted map built on a left leaning red black balanced

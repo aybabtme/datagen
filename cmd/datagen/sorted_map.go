@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/codegangsta/cli"
+	"gopkg.in/urfave/cli.v1"
 )
 
 func sortedMap() cli.Command {
@@ -57,6 +57,8 @@ generated with the custom type)`,
 
 			src := []byte(redblackbstMapSrc)
 			src = bytes.Replace(src, []byte("package redblackbst"), []byte(pkgname), 1)
+
+			src = bytes.Replace(src, []byte("// GENERATED CODE!!!"), []byte(generatedCodeComment()), 1)
 
 			// need to replace Compare before replacing KType
 			src = replaceRbstCompareFunc(ktype, src)
