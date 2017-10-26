@@ -1,5 +1,5 @@
 build:
-  main: ./cmd/datagen/main.go
+  main: ./cmd/datagen
   binary: datagen
   ldflags_template: -s -w -X main.build={{.Version}}
   goos:

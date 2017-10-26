@@ -25,7 +25,10 @@ import (
 	"gopkg.in/urfave/cli.v1"
 )
 
-var build = "dev"
+var (
+	version = "dev"
+	build   = version
+)
 
 func main() {
 	log.SetFlags(0)
