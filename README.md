@@ -10,7 +10,7 @@ $ go get -u github.com/aybabtme/datagen/...
 ## On linux
 
 ```bash
-wget -qO- https://github.com/aybabtme/datagen/releases/download/0.1.2/datagen_Linux_x86_64.tar.gz | tar xvz
+wget -qO- https://github.com/aybabtme/datagen/releases/download/0.1.3/datagen_Linux_x86_64.tar.gz | tar xvz
 ```
 
 ## On OS X

@@ -7,7 +7,7 @@ package codegen
 //
 // The command that generated this was:
 //
-//	/var/folders/ng/k4qlpfms3bd8m6g7rqn5rx1r0000gn/T/go-build242678849/command-line-arguments/_obj/exe/heap smap -key int -val string
+//	/var/folders/ng/k4qlpfms3bd8m6g7rqn5rx1r0000gn/T/go-build778559517/command-line-arguments/_obj/exe/heap smap -key int -val string
 
 func (r SortedIntToStringMap) compare(a, b int) int { return int(a) - int(b) }
 
