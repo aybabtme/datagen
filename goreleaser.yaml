@@ -1,0 +1,19 @@
+build:
+  main: ./cmd/datagen/main.go
+  binary: datagen
+  ldflags_template: -s -w -X main.build={{.Version}}
+  goos:
+    - windows
+    - darwin
+    - linux
+  goarch:
+    - amd64
+
+brew:
+  github:
+    owner: aybabtme
+    name: homebrew-tap
+
+fpm:
+  formats:
+    - deb

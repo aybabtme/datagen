@@ -2,6 +2,9 @@
 
 set -e
 
+basedir=$(git rev-parse --show-toplevel)
+cd $basedir
+
 echo "!! Testing datastructure implementations"
 go test -cover ./...
 
