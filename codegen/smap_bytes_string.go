@@ -7,7 +7,7 @@ package codegen
 //
 // The command that generated this was:
 //
-//	/var/folders/ng/k4qlpfms3bd8m6g7rqn5rx1r0000gn/T/go-build426387111/command-line-arguments/_obj/exe/heap smap -key []byte -val string
+//	/var/folders/ng/k4qlpfms3bd8m6g7rqn5rx1r0000gn/T/go-build987411153/command-line-arguments/_obj/exe/heap smap -key []byte -val string
 
 import "bytes"
 

@@ -7,7 +7,7 @@ package codegen
 //
 // The command that generated this was:
 //
-//	/var/folders/ng/k4qlpfms3bd8m6g7rqn5rx1r0000gn/T/go-build308087115/command-line-arguments/_obj/exe/heap queue -key int
+//	/var/folders/ng/k4qlpfms3bd8m6g7rqn5rx1r0000gn/T/go-build382219125/command-line-arguments/_obj/exe/heap queue -key int
 
 // Implementation adapted from github.com/eapache/queue:
 //    The MIT License (MIT)

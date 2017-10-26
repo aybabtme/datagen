@@ -33,6 +33,7 @@ source ./scripts/update.sh
 
 temple file < $basedir/scripts/README.tmpl.md > $basedir/README.md -var "version=$version"
 
+git add . -A
 git add $basedir/README.md
 git commit -m "$msg"
 git tag -a $version -m "$msg"
