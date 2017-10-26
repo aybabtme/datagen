@@ -7,7 +7,7 @@ package codegen
 //
 // The command that generated this was:
 //
-//	/var/folders/ng/k4qlpfms3bd8m6g7rqn5rx1r0000gn/T/go-build564676837/command-line-arguments/_obj/exe/heap sset -key float64
+//	/var/folders/ng/k4qlpfms3bd8m6g7rqn5rx1r0000gn/T/go-build364220101/command-line-arguments/_obj/exe/heap sset -key float64
 
 
 func (r SortedFloat64Set) compare(a, b float64) int {

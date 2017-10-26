@@ -7,7 +7,7 @@ package codegen
 //
 // The command that generated this was:
 //
-//	/var/folders/ng/k4qlpfms3bd8m6g7rqn5rx1r0000gn/T/go-build936525757/command-line-arguments/_obj/exe/heap heap -key string
+//	/var/folders/ng/k4qlpfms3bd8m6g7rqn5rx1r0000gn/T/go-build297329813/command-line-arguments/_obj/exe/heap heap -key string
 
 // Most of the implementation is adapted from Algorithms 4ed by Sedgewick
 // and Wayne.
