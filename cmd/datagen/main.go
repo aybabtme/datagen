@@ -25,10 +25,7 @@ import (
 	"gopkg.in/urfave/cli.v1"
 )
 
-var (
-	version = "dev"
-	build   = version
-)
+var version = "master"
 
 func main() {
 	log.SetFlags(0)
@@ -38,7 +35,7 @@ func main() {
 	app.Name = "datagen"
 	app.Email = "antoinegrondin@gmail.com"
 	app.Author = "Antoine Grondin"
-	app.Version = build
+	app.Version = version
 	app.Usage = "Generate datastructures for your types."
 	app.Commands = append(app.Commands, sortedMap())
 	app.Commands = append(app.Commands, sortedSet())

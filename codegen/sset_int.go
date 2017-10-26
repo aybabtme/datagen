@@ -7,7 +7,7 @@ package codegen
 //
 // The command that generated this was:
 //
-//	/var/folders/ng/k4qlpfms3bd8m6g7rqn5rx1r0000gn/T/go-build091194557/command-line-arguments/_obj/exe/heap sset -key int
+//	/var/folders/ng/k4qlpfms3bd8m6g7rqn5rx1r0000gn/T/go-build329202859/command-line-arguments/_obj/exe/heap sset -key int
 
 func (r SortedIntSet) compare(a, b int) int { return int(a) - int(b) }
 
