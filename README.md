@@ -2,8 +2,22 @@
 
 Generate datastructures for your types.
 
+## With Go installed
 ```bash
-go get github.com/aybabtme/datagen/...
+$ go get -u github.com/aybabtme/datagen/...
+```
+
+## On linux
+
+```bash
+wget -qO- https://github.com/aybabtme/datagen/releases/download/0.1.2/datagen_Linux_x86_64.tar.gz | tar xvz
+```
+
+## On OS X
+
+```bash
+brew tap aybabtme/homebrew-tap
+brew install datagen
 ```
 
 Builds upon well tested implementations of datastructures
@@ -228,4 +242,3 @@ Evan Huus.
 
 Some tests for the red black tree were extracted from GoLLRB, a similar
 implementation by Petar Maymounkov.
-
