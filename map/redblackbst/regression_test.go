@@ -1,7 +1,13 @@
 package redblackbst
 
 import (
+	"crypto/rand"
+	mrand "math/rand"
+	"reflect"
+	"sort"
 	"testing"
+
+	"github.com/oklog/ulid"
 )
 
 func TestRegressionPanicDelete(t *testing.T) {
@@ -35,4 +41,42 @@ func TestRegressionPanicDelete(t *testing.T) {
 	tree.Delete(K("key:abastardize"))
 	tree.Delete(K("key:abatement"))
 	tree.Delete(K("key:abater"))
+}
+
+func TestLexicalStringOrder(t *testing.T) {
+	samples := 100
+	minSize := 2
+	maxSize := 20
+	permCount := 100
+
+	generateKeys := func(n int) []string {
+		keys := make([]string, 0, n)
+		for i := 0; i < n; i++ {
+			keys = append(keys, ulid.MustNew(ulid.Now(), rand.Reader).String())
+		}
+		return keys
+	}
+
+	for i := 0; i < samples; i++ {
+		want := generateKeys(minSize + mrand.Intn(maxSize-minSize))
+		for j := 0; j < permCount; j++ {
+			tree := NewRedBlack()
+
+			for _, idx := range mrand.Perm(len(want)) {
+				k := want[idx]
+				tree.Put(K(k), "value:"+k)
+			}
+			var got []string
+			tree.Keys(func(k KType, _ VType) bool {
+				got = append(got, string(k.(K)))
+				return true
+			})
+			sort.Strings(want)
+			if !reflect.DeepEqual(want, got) {
+				t.Logf("want=%#v", want)
+				t.Logf(" got=%#v", got)
+				t.Fatalf("mismatch!")
+			}
+		}
+	}
 }
