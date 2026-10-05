@@ -1,0 +1,246 @@
+goos: darwin
+goarch: arm64
+pkg: github.com/aybabtme/datagen/bench/suite
+cpu: Apple M4 Max
+BenchmarkQueue/key=int/n=1000/op=filldrain/impl=own-16         	   75879	     13844 ns/op	        13.84 ns/key	   24192 B/op	      12 allocs/op
+BenchmarkQueue/key=int/n=1000/op=filldrain/impl=own-16         	   89846	     13497 ns/op	        13.50 ns/key	   24192 B/op	      12 allocs/op
+BenchmarkQueue/key=int/n=1000/op=filldrain/impl=own-16         	   88010	     13890 ns/op	        13.89 ns/key	   24192 B/op	      12 allocs/op
+BenchmarkQueue/key=int/n=1000/op=filldrain/impl=own-16         	   83674	     13723 ns/op	        13.72 ns/key	   24192 B/op	      12 allocs/op
+BenchmarkQueue/key=int/n=1000/op=filldrain/impl=own-16         	   84506	     14225 ns/op	        14.23 ns/key	   24192 B/op	      12 allocs/op
+BenchmarkQueue/key=int/n=1000/op=filldrain/impl=own-16         	   87061	     14088 ns/op	        14.09 ns/key	   24192 B/op	      12 allocs/op
+BenchmarkQueue/key=int/n=1000/op=filldrain/impl=generic-16     	   84494	     14248 ns/op	        14.25 ns/key	   24192 B/op	      12 allocs/op
+BenchmarkQueue/key=int/n=1000/op=filldrain/impl=generic-16     	   80144	     14480 ns/op	        14.48 ns/key	   24192 B/op	      12 allocs/op
+BenchmarkQueue/key=int/n=1000/op=filldrain/impl=generic-16     	   86929	     13793 ns/op	        13.79 ns/key	   24192 B/op	      12 allocs/op
+BenchmarkQueue/key=int/n=1000/op=filldrain/impl=generic-16     	   86810	     13829 ns/op	        13.83 ns/key	   24192 B/op	      12 allocs/op
+BenchmarkQueue/key=int/n=1000/op=filldrain/impl=generic-16     	   86613	     13899 ns/op	        13.90 ns/key	   24192 B/op	      12 allocs/op
+BenchmarkQueue/key=int/n=1000/op=filldrain/impl=generic-16     	   80798	     14348 ns/op	        14.35 ns/key	   24192 B/op	      12 allocs/op
+BenchmarkQueue/key=int/n=1000/op=filldrain/impl=stdlib-16      	   75903	     15937 ns/op	        15.94 ns/key	   53952 B/op	    1744 allocs/op
+BenchmarkQueue/key=int/n=1000/op=filldrain/impl=stdlib-16      	   74896	     16007 ns/op	        16.01 ns/key	   53953 B/op	    1744 allocs/op
+BenchmarkQueue/key=int/n=1000/op=filldrain/impl=stdlib-16      	   71690	     16254 ns/op	        16.25 ns/key	   53953 B/op	    1744 allocs/op
+BenchmarkQueue/key=int/n=1000/op=filldrain/impl=stdlib-16      	   74350	     16509 ns/op	        16.51 ns/key	   53952 B/op	    1744 allocs/op
+BenchmarkQueue/key=int/n=1000/op=filldrain/impl=stdlib-16      	   70995	     16303 ns/op	        16.30 ns/key	   53952 B/op	    1744 allocs/op
+BenchmarkQueue/key=int/n=1000/op=filldrain/impl=stdlib-16      	   73515	     16103 ns/op	        16.10 ns/key	   53952 B/op	    1744 allocs/op
+BenchmarkQueue/key=int/n=1000/op=filldrain/impl=gammazero-16   	  174890	      6906 ns/op	         6.906 ns/key	   24192 B/op	      12 allocs/op
+BenchmarkQueue/key=int/n=1000/op=filldrain/impl=gammazero-16   	  171632	      7082 ns/op	         7.082 ns/key	   24192 B/op	      12 allocs/op
+BenchmarkQueue/key=int/n=1000/op=filldrain/impl=gammazero-16   	  173217	      6903 ns/op	         6.903 ns/key	   24192 B/op	      12 allocs/op
+BenchmarkQueue/key=int/n=1000/op=filldrain/impl=gammazero-16   	  174274	      6918 ns/op	         6.918 ns/key	   24192 B/op	      12 allocs/op
+BenchmarkQueue/key=int/n=1000/op=filldrain/impl=gammazero-16   	  175934	      6907 ns/op	         6.907 ns/key	   24192 B/op	      12 allocs/op
+BenchmarkQueue/key=int/n=1000/op=filldrain/impl=gammazero-16   	  174660	      7084 ns/op	         7.084 ns/key	   24192 B/op	      12 allocs/op
+BenchmarkQueue/key=int/n=1000/op=filldrain/impl=eapache-16     	  115732	     10335 ns/op	        10.34 ns/key	   35776 B/op	    1012 allocs/op
+BenchmarkQueue/key=int/n=1000/op=filldrain/impl=eapache-16     	  116992	     10278 ns/op	        10.28 ns/key	   35776 B/op	    1012 allocs/op
+BenchmarkQueue/key=int/n=1000/op=filldrain/impl=eapache-16     	  114727	     10261 ns/op	        10.26 ns/key	   35776 B/op	    1012 allocs/op
+BenchmarkQueue/key=int/n=1000/op=filldrain/impl=eapache-16     	  116676	     10660 ns/op	        10.66 ns/key	   35776 B/op	    1012 allocs/op
+BenchmarkQueue/key=int/n=1000/op=filldrain/impl=eapache-16     	  114957	     10330 ns/op	        10.33 ns/key	   35776 B/op	    1012 allocs/op
+BenchmarkQueue/key=int/n=1000/op=filldrain/impl=eapache-16     	  117196	     10223 ns/op	        10.22 ns/key	   35776 B/op	    1012 allocs/op
+BenchmarkQueue/key=int/n=1000/op=ticktock/impl=own-16          	173461164	         7.161 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=int/n=1000/op=ticktock/impl=own-16          	160564034	         7.276 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=int/n=1000/op=ticktock/impl=own-16          	167656918	         7.020 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=int/n=1000/op=ticktock/impl=own-16          	168556212	         7.278 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=int/n=1000/op=ticktock/impl=own-16          	167850018	         6.947 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=int/n=1000/op=ticktock/impl=own-16          	160627983	         7.485 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=int/n=1000/op=ticktock/impl=generic-16      	144653769	         8.376 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=int/n=1000/op=ticktock/impl=generic-16      	137933206	         8.615 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=int/n=1000/op=ticktock/impl=generic-16      	141744037	         8.432 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=int/n=1000/op=ticktock/impl=generic-16      	141492441	         8.436 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=int/n=1000/op=ticktock/impl=generic-16      	143408560	         8.399 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=int/n=1000/op=ticktock/impl=generic-16      	142441074	         8.394 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=int/n=1000/op=ticktock/impl=stdlib-16       	74957250	        16.59 ns/op	      53 B/op	       1 allocs/op
+BenchmarkQueue/key=int/n=1000/op=ticktock/impl=stdlib-16       	73267153	        16.51 ns/op	      53 B/op	       1 allocs/op
+BenchmarkQueue/key=int/n=1000/op=ticktock/impl=stdlib-16       	74909874	        16.17 ns/op	      53 B/op	       1 allocs/op
+BenchmarkQueue/key=int/n=1000/op=ticktock/impl=stdlib-16       	73232689	        16.13 ns/op	      53 B/op	       1 allocs/op
+BenchmarkQueue/key=int/n=1000/op=ticktock/impl=stdlib-16       	76405336	        16.58 ns/op	      53 B/op	       1 allocs/op
+BenchmarkQueue/key=int/n=1000/op=ticktock/impl=stdlib-16       	74562337	        16.45 ns/op	      53 B/op	       1 allocs/op
+BenchmarkQueue/key=int/n=1000/op=ticktock/impl=gammazero-16    	246335080	         4.877 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=int/n=1000/op=ticktock/impl=gammazero-16    	238526719	         5.067 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=int/n=1000/op=ticktock/impl=gammazero-16    	246453444	         4.907 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=int/n=1000/op=ticktock/impl=gammazero-16    	247060197	         4.853 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=int/n=1000/op=ticktock/impl=gammazero-16    	246938964	         4.857 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=int/n=1000/op=ticktock/impl=gammazero-16    	247077217	         4.859 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=int/n=1000/op=ticktock/impl=eapache-16      	124773349	         9.702 ns/op	       8 B/op	       1 allocs/op
+BenchmarkQueue/key=int/n=1000/op=ticktock/impl=eapache-16      	124075790	         9.630 ns/op	       8 B/op	       1 allocs/op
+BenchmarkQueue/key=int/n=1000/op=ticktock/impl=eapache-16      	125230447	         9.600 ns/op	       8 B/op	       1 allocs/op
+BenchmarkQueue/key=int/n=1000/op=ticktock/impl=eapache-16      	122519271	         9.726 ns/op	       8 B/op	       1 allocs/op
+BenchmarkQueue/key=int/n=1000/op=ticktock/impl=eapache-16      	125424750	         9.611 ns/op	       8 B/op	       1 allocs/op
+BenchmarkQueue/key=int/n=1000/op=ticktock/impl=eapache-16      	123843406	         9.690 ns/op	       8 B/op	       1 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=filldrain/impl=own-16      	      78	  13091268 ns/op	        13.09 ns/key	25165445 B/op	      32 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=filldrain/impl=own-16      	      84	  13414235 ns/op	        13.41 ns/key	25165442 B/op	      32 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=filldrain/impl=own-16      	     100	  12761685 ns/op	        12.76 ns/key	25165444 B/op	      32 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=filldrain/impl=own-16      	      80	  13808056 ns/op	        13.81 ns/key	25165442 B/op	      32 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=filldrain/impl=own-16      	      80	  12973588 ns/op	        12.97 ns/key	25165444 B/op	      32 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=filldrain/impl=own-16      	     100	  13504079 ns/op	        13.50 ns/key	25165442 B/op	      32 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=filldrain/impl=generic-16  	     100	  12339565 ns/op	        12.34 ns/key	25165443 B/op	      32 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=filldrain/impl=generic-16  	      96	  12984720 ns/op	        12.98 ns/key	25165440 B/op	      32 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=filldrain/impl=generic-16  	      93	  12702960 ns/op	        12.70 ns/key	25165442 B/op	      32 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=filldrain/impl=generic-16  	     100	  12524896 ns/op	        12.52 ns/key	25165446 B/op	      32 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=filldrain/impl=generic-16  	      93	  12739541 ns/op	        12.74 ns/key	25165442 B/op	      32 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=filldrain/impl=generic-16  	     100	  12706335 ns/op	        12.71 ns/key	25165443 B/op	      32 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=filldrain/impl=stdlib-16   	      45	  28799028 ns/op	        28.80 ns/key	55998448 B/op	 1999744 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=filldrain/impl=stdlib-16   	      51	  27976680 ns/op	        27.98 ns/key	55997975 B/op	 1999744 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=filldrain/impl=stdlib-16   	      44	  28306701 ns/op	        28.31 ns/key	55997992 B/op	 1999744 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=filldrain/impl=stdlib-16   	      48	  27939637 ns/op	        27.94 ns/key	55997978 B/op	 1999744 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=filldrain/impl=stdlib-16   	      51	  27207936 ns/op	        27.21 ns/key	55997981 B/op	 1999744 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=filldrain/impl=stdlib-16   	      51	  27403855 ns/op	        27.40 ns/key	55997979 B/op	 1999744 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=filldrain/impl=gammazero-16         	     206	   5796353 ns/op	         5.796 ns/key	25165442 B/op	      32 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=filldrain/impl=gammazero-16         	     205	   5880997 ns/op	         5.881 ns/key	25165442 B/op	      32 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=filldrain/impl=gammazero-16         	     206	   5814125 ns/op	         5.814 ns/key	25165450 B/op	      32 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=filldrain/impl=gammazero-16         	     206	   5787741 ns/op	         5.788 ns/key	25165448 B/op	      32 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=filldrain/impl=gammazero-16         	     204	   5826943 ns/op	         5.827 ns/key	25165446 B/op	      32 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=filldrain/impl=gammazero-16         	     204	   5915367 ns/op	         5.915 ns/key	25165445 B/op	      32 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=filldrain/impl=eapache-16           	     105	  11243429 ns/op	        11.24 ns/key	33174575 B/op	 1000032 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=filldrain/impl=eapache-16           	      97	  11263013 ns/op	        11.26 ns/key	33174420 B/op	 1000032 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=filldrain/impl=eapache-16           	      98	  11146254 ns/op	        11.15 ns/key	33174418 B/op	 1000032 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=filldrain/impl=eapache-16           	     100	  11195443 ns/op	        11.20 ns/key	33174421 B/op	 1000032 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=filldrain/impl=eapache-16           	      92	  11542362 ns/op	        11.54 ns/key	33174423 B/op	 1000032 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=filldrain/impl=eapache-16           	     105	  11285026 ns/op	        11.29 ns/key	33174422 B/op	 1000032 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=ticktock/impl=own-16                	185084858	         6.516 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=ticktock/impl=own-16                	171701136	         7.094 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=ticktock/impl=own-16                	178977322	         6.835 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=ticktock/impl=own-16                	165145890	         7.043 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=ticktock/impl=own-16                	164770621	         7.293 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=ticktock/impl=own-16                	183295993	         6.716 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=ticktock/impl=generic-16            	158298710	         7.615 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=ticktock/impl=generic-16            	160084719	         7.490 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=ticktock/impl=generic-16            	159640197	         7.520 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=ticktock/impl=generic-16            	161291116	         7.455 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=ticktock/impl=generic-16            	160865761	         7.518 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=ticktock/impl=generic-16            	159965154	         7.429 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=ticktock/impl=stdlib-16             	44454300	        27.35 ns/op	      55 B/op	       1 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=ticktock/impl=stdlib-16             	43439871	        27.20 ns/op	      55 B/op	       1 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=ticktock/impl=stdlib-16             	38306378	        27.29 ns/op	      55 B/op	       1 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=ticktock/impl=stdlib-16             	37679714	        28.22 ns/op	      55 B/op	       1 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=ticktock/impl=stdlib-16             	43850652	        27.37 ns/op	      55 B/op	       1 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=ticktock/impl=stdlib-16             	43832680	        27.28 ns/op	      55 B/op	       1 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=ticktock/impl=gammazero-16          	226545607	         5.307 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=ticktock/impl=gammazero-16          	225262623	         5.360 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=ticktock/impl=gammazero-16          	224716681	         5.377 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=ticktock/impl=gammazero-16          	225779096	         5.303 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=ticktock/impl=gammazero-16          	225717640	         5.309 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=ticktock/impl=gammazero-16          	226753762	         5.357 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=ticktock/impl=eapache-16            	121337012	         9.865 ns/op	       8 B/op	       1 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=ticktock/impl=eapache-16            	123052112	         9.744 ns/op	       8 B/op	       1 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=ticktock/impl=eapache-16            	122689443	         9.783 ns/op	       8 B/op	       1 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=ticktock/impl=eapache-16            	122499640	         9.810 ns/op	       8 B/op	       1 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=ticktock/impl=eapache-16            	120430820	         9.937 ns/op	       8 B/op	       1 allocs/op
+BenchmarkQueue/key=int/n=1000000/op=ticktock/impl=eapache-16            	122480724	         9.791 ns/op	       8 B/op	       1 allocs/op
+BenchmarkQueue/key=string/n=1000/op=filldrain/impl=own-16               	   70093	     17173 ns/op	        17.17 ns/key	   55296 B/op	      12 allocs/op
+BenchmarkQueue/key=string/n=1000/op=filldrain/impl=own-16               	   70042	     17147 ns/op	        17.15 ns/key	   55296 B/op	      12 allocs/op
+BenchmarkQueue/key=string/n=1000/op=filldrain/impl=own-16               	   68865	     17963 ns/op	        17.96 ns/key	   55296 B/op	      12 allocs/op
+BenchmarkQueue/key=string/n=1000/op=filldrain/impl=own-16               	   69704	     17126 ns/op	        17.13 ns/key	   55296 B/op	      12 allocs/op
+BenchmarkQueue/key=string/n=1000/op=filldrain/impl=own-16               	   70278	     17051 ns/op	        17.05 ns/key	   55296 B/op	      12 allocs/op
+BenchmarkQueue/key=string/n=1000/op=filldrain/impl=own-16               	   70508	     17063 ns/op	        17.06 ns/key	   55296 B/op	      12 allocs/op
+BenchmarkQueue/key=string/n=1000/op=filldrain/impl=generic-16           	   67922	     18116 ns/op	        18.12 ns/key	   55296 B/op	      12 allocs/op
+BenchmarkQueue/key=string/n=1000/op=filldrain/impl=generic-16           	   63014	     17899 ns/op	        17.90 ns/key	   55296 B/op	      12 allocs/op
+BenchmarkQueue/key=string/n=1000/op=filldrain/impl=generic-16           	   67641	     17701 ns/op	        17.70 ns/key	   55296 B/op	      12 allocs/op
+BenchmarkQueue/key=string/n=1000/op=filldrain/impl=generic-16           	   68074	     17669 ns/op	        17.67 ns/key	   55296 B/op	      12 allocs/op
+BenchmarkQueue/key=string/n=1000/op=filldrain/impl=generic-16           	   68104	     17715 ns/op	        17.72 ns/key	   55296 B/op	      12 allocs/op
+BenchmarkQueue/key=string/n=1000/op=filldrain/impl=generic-16           	   65275	     19472 ns/op	        19.47 ns/key	   55296 B/op	      12 allocs/op
+BenchmarkQueue/key=string/n=1000/op=filldrain/impl=stdlib-16            	   57058	     20465 ns/op	        20.46 ns/key	   64000 B/op	    2000 allocs/op
+BenchmarkQueue/key=string/n=1000/op=filldrain/impl=stdlib-16            	   61675	     19146 ns/op	        19.15 ns/key	   64000 B/op	    2000 allocs/op
+BenchmarkQueue/key=string/n=1000/op=filldrain/impl=stdlib-16            	   63780	     18881 ns/op	        18.88 ns/key	   64000 B/op	    2000 allocs/op
+BenchmarkQueue/key=string/n=1000/op=filldrain/impl=stdlib-16            	   63480	     18907 ns/op	        18.91 ns/key	   64000 B/op	    2000 allocs/op
+BenchmarkQueue/key=string/n=1000/op=filldrain/impl=stdlib-16            	   63492	     19246 ns/op	        19.25 ns/key	   64000 B/op	    2000 allocs/op
+BenchmarkQueue/key=string/n=1000/op=filldrain/impl=stdlib-16            	   64296	     18738 ns/op	        18.74 ns/key	   64000 B/op	    2000 allocs/op
+BenchmarkQueue/key=string/n=1000/op=filldrain/impl=gammazero-16         	  118723	     10212 ns/op	        10.21 ns/key	   55296 B/op	      12 allocs/op
+BenchmarkQueue/key=string/n=1000/op=filldrain/impl=gammazero-16         	  118670	     10446 ns/op	        10.45 ns/key	   55296 B/op	      12 allocs/op
+BenchmarkQueue/key=string/n=1000/op=filldrain/impl=gammazero-16         	  116556	     10540 ns/op	        10.54 ns/key	   55296 B/op	      12 allocs/op
+BenchmarkQueue/key=string/n=1000/op=filldrain/impl=gammazero-16         	  113746	     10304 ns/op	        10.30 ns/key	   55296 B/op	      12 allocs/op
+BenchmarkQueue/key=string/n=1000/op=filldrain/impl=gammazero-16         	  116458	     10335 ns/op	        10.34 ns/key	   55296 B/op	      12 allocs/op
+BenchmarkQueue/key=string/n=1000/op=filldrain/impl=gammazero-16         	  115971	     10317 ns/op	        10.32 ns/key	   55296 B/op	      12 allocs/op
+BenchmarkQueue/key=string/n=1000/op=filldrain/impl=eapache-16           	  102138	     12027 ns/op	        12.03 ns/key	   43776 B/op	    1012 allocs/op
+BenchmarkQueue/key=string/n=1000/op=filldrain/impl=eapache-16           	   97784	     12156 ns/op	        12.16 ns/key	   43776 B/op	    1012 allocs/op
+BenchmarkQueue/key=string/n=1000/op=filldrain/impl=eapache-16           	  101306	     11980 ns/op	        11.98 ns/key	   43776 B/op	    1012 allocs/op
+BenchmarkQueue/key=string/n=1000/op=filldrain/impl=eapache-16           	  100639	     11818 ns/op	        11.82 ns/key	   43776 B/op	    1012 allocs/op
+BenchmarkQueue/key=string/n=1000/op=filldrain/impl=eapache-16           	  101674	     11930 ns/op	        11.93 ns/key	   43776 B/op	    1012 allocs/op
+BenchmarkQueue/key=string/n=1000/op=filldrain/impl=eapache-16           	   97960	     12059 ns/op	        12.06 ns/key	   43776 B/op	    1012 allocs/op
+BenchmarkQueue/key=string/n=1000/op=ticktock/impl=own-16                	162782209	         7.456 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=string/n=1000/op=ticktock/impl=own-16                	163394307	         7.330 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=string/n=1000/op=ticktock/impl=own-16                	159856688	         7.468 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=string/n=1000/op=ticktock/impl=own-16                	160916023	         7.417 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=string/n=1000/op=ticktock/impl=own-16                	161882230	         7.433 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=string/n=1000/op=ticktock/impl=own-16                	160671794	         7.421 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=string/n=1000/op=ticktock/impl=generic-16            	249480573	         4.784 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=string/n=1000/op=ticktock/impl=generic-16            	250178491	         4.796 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=string/n=1000/op=ticktock/impl=generic-16            	252912621	         4.742 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=string/n=1000/op=ticktock/impl=generic-16            	253513538	         4.738 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=string/n=1000/op=ticktock/impl=generic-16            	251025456	         4.792 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=string/n=1000/op=ticktock/impl=generic-16            	252149176	         4.794 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=string/n=1000/op=ticktock/impl=stdlib-16             	62120240	        18.44 ns/op	      64 B/op	       2 allocs/op
+BenchmarkQueue/key=string/n=1000/op=ticktock/impl=stdlib-16             	66937357	        18.35 ns/op	      64 B/op	       2 allocs/op
+BenchmarkQueue/key=string/n=1000/op=ticktock/impl=stdlib-16             	66177384	        18.31 ns/op	      64 B/op	       2 allocs/op
+BenchmarkQueue/key=string/n=1000/op=ticktock/impl=stdlib-16             	65787218	        18.73 ns/op	      64 B/op	       2 allocs/op
+BenchmarkQueue/key=string/n=1000/op=ticktock/impl=stdlib-16             	64018208	        18.44 ns/op	      64 B/op	       2 allocs/op
+BenchmarkQueue/key=string/n=1000/op=ticktock/impl=stdlib-16             	66241615	        18.27 ns/op	      64 B/op	       2 allocs/op
+BenchmarkQueue/key=string/n=1000/op=ticktock/impl=gammazero-16          	213294639	         5.656 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=string/n=1000/op=ticktock/impl=gammazero-16          	210135382	         5.727 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=string/n=1000/op=ticktock/impl=gammazero-16          	208930926	         5.711 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=string/n=1000/op=ticktock/impl=gammazero-16          	210617490	         5.704 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=string/n=1000/op=ticktock/impl=gammazero-16          	210790296	         5.740 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=string/n=1000/op=ticktock/impl=gammazero-16          	208449168	         5.737 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=string/n=1000/op=ticktock/impl=eapache-16            	123323511	         9.622 ns/op	      16 B/op	       1 allocs/op
+BenchmarkQueue/key=string/n=1000/op=ticktock/impl=eapache-16            	128462040	         9.338 ns/op	      16 B/op	       1 allocs/op
+BenchmarkQueue/key=string/n=1000/op=ticktock/impl=eapache-16            	129755241	         9.259 ns/op	      16 B/op	       1 allocs/op
+BenchmarkQueue/key=string/n=1000/op=ticktock/impl=eapache-16            	129166869	         9.266 ns/op	      16 B/op	       1 allocs/op
+BenchmarkQueue/key=string/n=1000/op=ticktock/impl=eapache-16            	125990964	         9.502 ns/op	      16 B/op	       1 allocs/op
+BenchmarkQueue/key=string/n=1000/op=ticktock/impl=eapache-16            	131680914	         9.100 ns/op	      16 B/op	       1 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=filldrain/impl=own-16            	      57	  17582439 ns/op	        17.58 ns/key	50339840 B/op	      32 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=filldrain/impl=own-16            	      62	  17706503 ns/op	        17.71 ns/key	50339840 B/op	      32 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=filldrain/impl=own-16            	      79	  17965556 ns/op	        17.97 ns/key	50339840 B/op	      32 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=filldrain/impl=own-16            	      60	  17555140 ns/op	        17.56 ns/key	50339840 B/op	      32 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=filldrain/impl=own-16            	      72	  17512214 ns/op	        17.51 ns/key	50339840 B/op	      32 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=filldrain/impl=own-16            	      68	  17666922 ns/op	        17.67 ns/key	50339840 B/op	      32 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=filldrain/impl=generic-16        	      57	  18653837 ns/op	        18.65 ns/key	50339840 B/op	      32 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=filldrain/impl=generic-16        	      62	  18164434 ns/op	        18.16 ns/key	50339840 B/op	      32 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=filldrain/impl=generic-16        	      56	  18801864 ns/op	        18.80 ns/key	50339840 B/op	      32 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=filldrain/impl=generic-16        	      70	  18777677 ns/op	        18.78 ns/key	50339840 B/op	      32 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=filldrain/impl=generic-16        	      66	  18655275 ns/op	        18.66 ns/key	50339840 B/op	      32 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=filldrain/impl=generic-16        	      73	  18849840 ns/op	        18.85 ns/key	50339840 B/op	      32 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=filldrain/impl=stdlib-16         	      40	  35541703 ns/op	        35.54 ns/key	64000016 B/op	 2000000 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=filldrain/impl=stdlib-16         	      43	  34139853 ns/op	        34.14 ns/key	64000007 B/op	 2000000 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=filldrain/impl=stdlib-16         	      44	  34190388 ns/op	        34.19 ns/key	64000017 B/op	 2000000 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=filldrain/impl=stdlib-16         	      43	  35060251 ns/op	        35.06 ns/key	64000020 B/op	 2000000 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=filldrain/impl=stdlib-16         	      42	  33998131 ns/op	        34.00 ns/key	64000016 B/op	 2000000 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=filldrain/impl=stdlib-16         	      43	  32464982 ns/op	        32.46 ns/key	64000005 B/op	 2000000 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=filldrain/impl=gammazero-16      	     100	  10241704 ns/op	        10.24 ns/key	50339842 B/op	      32 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=filldrain/impl=gammazero-16      	     100	  10168077 ns/op	        10.17 ns/key	50339842 B/op	      32 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=filldrain/impl=gammazero-16      	     100	  10154928 ns/op	        10.15 ns/key	50339842 B/op	      32 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=filldrain/impl=gammazero-16      	     100	  10178487 ns/op	        10.18 ns/key	50339842 B/op	      32 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=filldrain/impl=gammazero-16      	     100	  10175427 ns/op	        10.18 ns/key	50339842 B/op	      32 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=filldrain/impl=gammazero-16      	     100	  10267855 ns/op	        10.27 ns/key	50339842 B/op	      32 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=filldrain/impl=eapache-16        	      85	  12433606 ns/op	        12.43 ns/key	41174462 B/op	 1000032 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=filldrain/impl=eapache-16        	      85	  12323469 ns/op	        12.32 ns/key	41174400 B/op	 1000032 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=filldrain/impl=eapache-16        	      87	  12288617 ns/op	        12.29 ns/key	41174400 B/op	 1000032 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=filldrain/impl=eapache-16        	      91	  12538774 ns/op	        12.54 ns/key	41174400 B/op	 1000032 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=filldrain/impl=eapache-16        	      91	  12576417 ns/op	        12.58 ns/key	41174400 B/op	 1000032 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=filldrain/impl=eapache-16        	      84	  12250519 ns/op	        12.25 ns/key	41174400 B/op	 1000032 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=ticktock/impl=own-16             	194861528	         6.179 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=ticktock/impl=own-16             	196640143	         6.102 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=ticktock/impl=own-16             	203306095	         6.133 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=ticktock/impl=own-16             	194194344	         6.156 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=ticktock/impl=own-16             	189920020	         6.170 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=ticktock/impl=own-16             	197489388	         6.056 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=ticktock/impl=generic-16         	243146785	         4.933 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=ticktock/impl=generic-16         	239398828	         4.982 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=ticktock/impl=generic-16         	243169983	         4.938 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=ticktock/impl=generic-16         	243673932	         4.929 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=ticktock/impl=generic-16         	243482776	         4.948 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=ticktock/impl=generic-16         	242263772	         4.980 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=ticktock/impl=stdlib-16          	35568228	        33.79 ns/op	      64 B/op	       2 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=ticktock/impl=stdlib-16          	35077303	        33.70 ns/op	      64 B/op	       2 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=ticktock/impl=stdlib-16          	36136807	        33.01 ns/op	      64 B/op	       2 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=ticktock/impl=stdlib-16          	32133710	        33.73 ns/op	      64 B/op	       2 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=ticktock/impl=stdlib-16          	35656756	        33.57 ns/op	      64 B/op	       2 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=ticktock/impl=stdlib-16          	35926576	        33.67 ns/op	      64 B/op	       2 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=ticktock/impl=gammazero-16       	195959532	         6.116 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=ticktock/impl=gammazero-16       	191586122	         6.221 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=ticktock/impl=gammazero-16       	193396112	         6.149 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=ticktock/impl=gammazero-16       	196493880	         6.123 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=ticktock/impl=gammazero-16       	196611549	         6.123 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=ticktock/impl=gammazero-16       	197063102	         6.114 ns/op	       0 B/op	       0 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=ticktock/impl=eapache-16         	100000000	        10.18 ns/op	      16 B/op	       1 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=ticktock/impl=eapache-16         	100000000	        10.03 ns/op	      16 B/op	       1 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=ticktock/impl=eapache-16         	100000000	        10.18 ns/op	      16 B/op	       1 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=ticktock/impl=eapache-16         	100000000	        10.08 ns/op	      16 B/op	       1 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=ticktock/impl=eapache-16         	100000000	        10.24 ns/op	      16 B/op	       1 allocs/op
+BenchmarkQueue/key=string/n=1000000/op=ticktock/impl=eapache-16         	100000000	        10.16 ns/op	      16 B/op	       1 allocs/op
+PASS
+ok  	github.com/aybabtme/datagen/bench/suite	287.678s
